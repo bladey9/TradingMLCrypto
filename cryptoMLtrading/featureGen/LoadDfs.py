@@ -32,6 +32,7 @@ def create_dataframes():
         for index,row in concat_dfs.iterrows():
             concat_dfs.at[index,"open_time"] = datetime.fromtimestamp(int(concat_dfs["open_time"][index])/1000)
         concat_dfs.sort_values(by=['open_time'], inplace=True, ascending=True)
+        del concat_dfs['index']
         coin_5m[coin] = concat_dfs
 
     return coin_5m
@@ -42,6 +43,12 @@ def create_dataframes():
 
 
 #coin_5m = create_dataframes()
+
+
+# In[ ]:
+
+
+#coin_5m['DOTUSDT'].head()
 
 
 # In[ ]:
