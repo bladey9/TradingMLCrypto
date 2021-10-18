@@ -28,11 +28,12 @@ def create_dataframes():
                 single_df.columns = ["open_time", "open", "high","low","close","volume","close_time","quote_asset_vol","num_of_trades","taker_buy_base_asset_vol","taker_buy_quote_asset_vol","ignore"]
                 loDf.append(single_df)
         
-        concat_dfs = pd.concat(loDf).reset_index() # concatenate all df into a single one for each individual coin 
+        concat_dfs = pd.concat(loDf)
+        concat_dfs = concat_dfs.reset_index() # concatenate all df into a single one for each individual coin 
         for index,row in concat_dfs.iterrows():
             concat_dfs.at[index,"open_time"] = datetime.fromtimestamp(int(concat_dfs["open_time"][index])/1000)
         concat_dfs.sort_values(by=['open_time'], inplace=True, ascending=True)
-        del concat_dfs['index']
+        del concat_dfs['index'] # deleting named 'index'
         coin_5m[coin] = concat_dfs
 
     return coin_5m
