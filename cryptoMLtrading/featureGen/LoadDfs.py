@@ -18,6 +18,7 @@ from datetime import datetime
 def create_dataframes():
     main_path = 'originalData/data/futures/um/monthly/klines'
     coins = [f for f in listdir(main_path) if 'USDT' in f]
+    coins.sort()
     coin_5m = {}
     for coin in coins:
         path_5m = main_path + '/' + coin + '/5m/'
@@ -28,11 +29,11 @@ def create_dataframes():
                 single_df.columns = ["open_time", "open", "high","low","close","volume","close_time","quote_asset_vol","num_of_trades","taker_buy_base_asset_vol","taker_buy_quote_asset_vol","ignore"]
                 loDf.append(single_df)
         
-        concat_dfs = pd.concat(loDf).reset_index() # concatenate all df into a single one for each individual coin 
+        concat_dfs = pd.concat(loDf).reset_index(drop=True) # concatenate all df into a single one for each individual coin 
         for index,row in concat_dfs.iterrows():
             concat_dfs.at[index,"open_time"] = datetime.fromtimestamp(int(concat_dfs["open_time"][index])/1000)
         concat_dfs.sort_values(by=['open_time'], inplace=True, ascending=True)
-        del concat_dfs['index'] # deleting named 'index'
+        concat_dfs.reset_index(drop=True, inplace = True)
         coin_5m[coin] = concat_dfs
 
     return coin_5m
@@ -42,13 +43,25 @@ def create_dataframes():
 # In[ ]:
 
 
-#coin_5m = create_dataframes()
+coin_5m = create_dataframes()
 
 
 # In[ ]:
 
 
-#coin_5m['DOTUSDT'].head()
+coin_5m['DOTUSDT'].head()
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
