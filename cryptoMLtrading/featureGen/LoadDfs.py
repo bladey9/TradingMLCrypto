@@ -17,7 +17,7 @@ from os.path import isfile, join
 def create_dataframes():
     main_path = 'originalData/data/futures/um/monthly/klines'
     coins = [f for f in listdir(main_path) if 'USDT' in f]
-    coin_5m = {}...
+    coin_5m = {}
     for coin in coins:
         path_5m = main_path + '/' + coin + '/5m/'
         loDf = [] # list of dataframes to afterwards append them all in a single one
