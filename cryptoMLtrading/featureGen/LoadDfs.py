@@ -11,13 +11,14 @@ from os import listdir
 from os.path import isfile, join
 
 
-# In[45]:
+# In[56]:
 
 
 def create_dataframes():
     main_path = 'originalData/data/futures/um/monthly/klines'
     coins = [f for f in listdir(main_path) if 'USDT' in f]
     coin_5m = {}
+    print(coins)
     for coin in coins:
         path_5m = main_path + '/' + coin + '/5m/'
         loDf = [] # list of dataframes to afterwards append them all in a single one
@@ -28,12 +29,18 @@ def create_dataframes():
                 loDf.append(single_df)
         concat_dfs = pd.concat(loDf) # concatenate all df into a single one for each individual coin
         coin_5m[coin] = concat_dfs 
-        return coin_5m
+    return coin_5m
         
 
 
-# In[46]:
+# In[ ]:
 
 
-#coin_5m = create_dataframes()
+
+
+
+# In[ ]:
+
+
+
 
