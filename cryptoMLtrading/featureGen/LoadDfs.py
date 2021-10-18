@@ -4,6 +4,12 @@
 # In[ ]:
 
 
+print('version1')
+
+
+# In[4]:
+
+
 import pandas as pd
 import numpy as np
 import os
@@ -12,7 +18,7 @@ from os.path import isfile, join
 from datetime import datetime
 
 
-# In[ ]:
+# In[5]:
 
 
 def create_dataframes():
@@ -21,6 +27,7 @@ def create_dataframes():
     coins.sort()
     coin_5m = {}
     for coin in coins:
+        print(coin)
         path_5m = main_path + '/' + coin + '/5m/'
         loDf = [] # list of dataframes to afterwards append them all in a single one
         for f in listdir(path_5m): # loop through every file in the 'path_5m' directory
@@ -40,22 +47,11 @@ def create_dataframes():
         
 
 
-# In[ ]:
+# In[6]:
 
 
-coin_5m = create_dataframes()
-
-
-# In[ ]:
-
-
-coin_5m['DOTUSDT'].head()
-
-
-# In[ ]:
-
-
-
+#coin_5m = create_dataframes()
+#coin_5m['DOTUSDT'].head()
 
 
 # In[ ]:
