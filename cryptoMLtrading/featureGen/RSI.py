@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 
 #retrieve Dataframe
-coins = LoadDfs.create_dataframes()
-dotusdt_df = coins["DOTUSDT"] 
+#coins = LoadDfs.create_dataframes()
+#dotusdt_df = coins["DOTUSDT"] 
 
 
 # In[27]:
@@ -37,16 +37,17 @@ def RSI(dataframe):
 
 
 #Append RSI column to original Dataframe
-df = RSI(dotusdt_df)
+#--
+#df = RSI(dotusdt_df)
 
 
-# In[40]:
+# In[42]:
 
 
 #Plot the values
-ax = df[['RSI']].plot(color=['blue'])
+#ax = df[['RSI']].plot(color=['blue'])
 #ax.fill_between(updated_df_BB.index, updated_df_BB['lowerBollinger'], updated_df_BB['upperBollinger'], facecolor='orange', alpha=0.1)
-plt.show()
+#plt.show()
 
 
 # In[ ]:
