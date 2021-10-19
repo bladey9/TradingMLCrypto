@@ -24,7 +24,7 @@ import pandas_ta as ta
 
 
 #Calculate Technical indicator on df
-def MACD(df):
+def SO(df):
     # # Calculate Stochastic Oscillator values using the pandas_ta library
     df.ta.stoch(high='high', low='low', k=14, d=3, append=True)
 
