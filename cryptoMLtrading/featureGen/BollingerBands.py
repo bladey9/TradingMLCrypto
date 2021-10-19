@@ -14,39 +14,39 @@ import matplotlib.pyplot as plt
 
 
 #Retrieve df
-coins = LoadDfs.create_dataframes()
-dotusdt_df = coins["DOTUSDT"]
+#coins = LoadDfs.create_dataframes()
+#df = coins["DOTUSDT"]
 
 
 # In[3]:
 
 
 #Calculate Technical indicator on df
-def BB():
+def BB(df):
     period = 20
     # small time Moving average. calculate 20 moving average using Pandas over close price
-    dotusdt_df['sma'] = dotusdt_df['close'].rolling(period).mean()
+    df['sma'] = df['close'].rolling(period).mean()
     # Get standard deviation
-    dotusdt_df['std'] = dotusdt_df['close'].rolling(period).std()
+    df['std'] = df['close'].rolling(period).std()
     
     # Bollinger bands are normalised by dividing it by the closing price, that way the final value of these do not reflect 
     # the price directly and create a bias in the model.
     
     # Calculate Upper Bollinger band
-    dotusdt_df['NormalisedUB'] = ( dotusdt_df['sma']  + (2 * dotusdt_df['std']) ) / dotusdt_df['close']
+    df['NormalisedUB'] = ( df['sma']  + (2 * df['std']) ) / df['close']
     # Calculate Lower Bollinger band
-    dotusdt_df['NormalisedLB'] = ( dotusdt_df['sma']  - (2 * dotusdt_df['std']) ) / dotusdt_df['close']
+    df['NormalisedLB'] = ( df['sma']  - (2 * df['std']) ) / df['close']
     # Remove the std column
-    dotusdt_df.drop(columns="std", inplace=True) 
+    df.drop(columns="std", inplace=True) 
     
     #Return df with new column of Technical Indicator
-    return dotusdt_df
+    return df
 
 
 # In[4]:
 
 
-#updated_df_BB = BB()
+#updated_df_BB = BB(df)
 #updated_df_BB.head(-100)
 
 
