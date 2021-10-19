@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[121]:
+# In[2]:
 
 
 import pandas as pd
@@ -11,14 +11,14 @@ import talib
 import matplotlib.pyplot as plt
 
 
-# In[119]:
+# In[12]:
 
 
 #coins = LoadDfs.create_dataframes()
 #dotusdt_df = coins["DOTUSDT"]
 
 
-# In[120]:
+# In[13]:
 
 
 def FR(dataframe):
@@ -32,8 +32,8 @@ def FR(dataframe):
             FR_percent.append(None)
         else:
             #find max and min values of the last 250 rows
-            maX = d["close"][i-250:i+1].max()
-            miN = d["close"][i-250:i+1].min()
+            maX = dataframe["close"][i-250:i+1].max()
+            miN = dataframe["close"][i-250:i+1].min()
 
             #calc the fibonacci levels
             diff = maX - miN
@@ -41,7 +41,7 @@ def FR(dataframe):
             level2 = maX - diff * 0.382
             level3 = maX - diff * 0.5
             level4 = maX - diff * 0.618
-            curr_price = d["close"][i]
+            curr_price = dataframe["close"][i]
 
             #calc fib grade and fib percent inside the grade
             if curr_price  >= level1:
@@ -66,6 +66,12 @@ def FR(dataframe):
     dataframe = dataframe.assign(FR_grade=fib_grades)
     dataframe = dataframe.assign(FR_percent=FR_percent)
     return dataframe
+
+
+# In[11]:
+
+
+#fr_df = FR(dotusdt_df)
 
 
 # In[ ]:
