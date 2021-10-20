@@ -10,8 +10,8 @@ import pandas as pd
 # In[2]:
 
 
-df = pd.read_csv('df_with_TI')
-df[-5:]
+#df = pd.read_csv('df_with_TI')
+#df[-5:]
 
 
 # In[3]:
@@ -43,14 +43,14 @@ def CLEAN(df):
 # In[4]:
 
 
-df_clean = CLEAN(df)
-df_clean[-5:]
+#df_clean = CLEAN(df)
+#df_clean[-5:]
 
 
 # In[5]:
 
 
-df_clean.shape
+#df_clean.shape
 
 
 # In[ ]:
