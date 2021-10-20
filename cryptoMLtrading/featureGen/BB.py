@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[7]:
+# In[1]:
 
 
 import pandas as pd
@@ -10,7 +10,7 @@ import LoadDfs
 import matplotlib.pyplot as plt
 
 
-# In[13]:
+# In[2]:
 
 
 #Retrieve df
@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 #df = coins["DOTUSDT"]
 
 
-# In[9]:
+# In[3]:
 
 
 #Calculate Technical indicator on df
@@ -36,14 +36,15 @@ def BB(df):
     df['NormalisedUB'] = ( df['sma']  + (2 * df['std']) ) / df['close']
     # Calculate Lower Bollinger band
     df['NormalisedLB'] = ( df['sma']  - (2 * df['std']) ) / df['close']
+        
     # Remove the std column
-    df.drop(columns="std", inplace=True) 
+    df.drop(columns=["std", "sma"], inplace=True) 
     
     #Return df with new column of Technical Indicator
     return df
 
 
-# In[15]:
+# In[4]:
 
 
 #updated_df_BB = BB(df)
@@ -56,7 +57,7 @@ def BB(df):
 #updated_df_BB = updated_df_BB[:10000] #(used to visualize the normalised BB with less data)
 
 
-# In[6]:
+# In[ ]:
 
 
 # Plotting it all together
