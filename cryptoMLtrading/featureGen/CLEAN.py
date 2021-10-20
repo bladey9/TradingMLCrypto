@@ -7,14 +7,14 @@
 import pandas as pd
 
 
-# In[2]:
+# In[ ]:
 
 
 #df = pd.read_csv('df_with_TI')
 #df[-5:]
 
 
-# In[3]:
+# In[2]:
 
 
 def CLEAN(df):
@@ -24,7 +24,7 @@ def CLEAN(df):
     df['RSI'] = df['RSI'] / 100
 
     # Remove columns
-    df.drop(columns=['open_time','close_time','ignore', 'quote_asset_vol', 'taker_buy_base_asset_vol', 'taker_buy_quote_asset_vol'], inplace=True)
+    df.drop(columns=['open','close', 'open_time','close_time','ignore', 'quote_asset_vol','taker_buy_base_asset_vol','taker_buy_quote_asset_vol'], inplace=True)
     df.dropna(inplace=True)
     
     check = True
@@ -40,14 +40,14 @@ def CLEAN(df):
         return 'ERROR: Index Missmatch'
 
 
-# In[4]:
+# In[ ]:
 
 
 #df_clean = CLEAN(df)
 #df_clean[-5:]
 
 
-# In[5]:
+# In[ ]:
 
 
 #df_clean.shape
