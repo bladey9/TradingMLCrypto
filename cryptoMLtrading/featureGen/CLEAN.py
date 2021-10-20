@@ -5,6 +5,7 @@
 
 
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 
 # In[ ]:
@@ -22,6 +23,13 @@ def CLEAN(df):
     df['high'] = df['high'] / df['close']
     df['low'] = df['low'] / df['close']
     df['RSI'] = df['RSI'] / 100
+    
+    # Scaling volume and number of trades
+    scaler = StandardScaler()
+    sca_vol = scaler.fit_transform(df[["volume"]])
+    df["volume"] = sca_vol
+    sca_NoT = scaler.fit_transform(df[["num_of_trades"]])
+    df["num_of_trades"] = sca_NoT
 
     # Remove columns
     df.drop(columns=['open','close', 'open_time','close_time','ignore', 'quote_asset_vol','taker_buy_base_asset_vol','taker_buy_quote_asset_vol'], inplace=True)
