@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[1]:
 
 
 import pandas as pd
 import numpy as np
 
 
-# In[4]:
+# In[3]:
 
 
 #Assign label to df
@@ -29,7 +29,9 @@ def LABEL(dataframe):
             dataframe.at[index-1,"label"] = 3
         else:
             dataframe.at[index-1,"label"] = 2
-
+            
+    dataframe.drop(dataframe.tail(2).index,inplace=True) 
+    
     return dataframe
 
 
