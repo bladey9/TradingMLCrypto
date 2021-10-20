@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 
-# In[3]:
+# In[6]:
 
 
 #Assign label to df
@@ -21,11 +21,11 @@ def LABEL(dataframe):
     for index,row in dataframe.iterrows():
         increase = (dataframe["high"][index] / dataframe["open"][index]) - 1
         decrease = (1 - (dataframe["low"][index]/dataframe["open"][index]))
-        if increase > 0.01 and decrease < 0.005:
+        if increase > 0.005 and decrease < 0.003:
             dataframe.at[index-1,"label"] = 1
-        elif increase < 0.005 and decrease > 0.01:
+        elif increase < 0.003 and decrease > 0.005:
             dataframe.at[index-1,"label"] = 4
-        elif increase > 0.01 and decrease > 0.01:
+        elif increase > 0.003 and decrease > 0.003:
             dataframe.at[index-1,"label"] = 3
         else:
             dataframe.at[index-1,"label"] = 2
