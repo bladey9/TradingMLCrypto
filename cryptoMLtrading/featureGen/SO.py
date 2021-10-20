@@ -36,7 +36,7 @@ def SO(df):
 
 
 #updated_df_SO = MACD(df)
-#updated_df_SO.head(-100)
+#updated_df_SO[-100:]
 
 
 # In[23]:

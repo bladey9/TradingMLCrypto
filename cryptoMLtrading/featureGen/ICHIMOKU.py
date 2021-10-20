@@ -12,15 +12,15 @@ import matplotlib.pyplot as plt
 import pandas_ta as ta
 
 
-# In[2]:
+# In[65]:
 
 
 #Retrieve df
-#coins = LoadDfs.create_dataframes()
-#df = coins["DOTUSDT"]
+coins = LoadDfs.create_dataframes()
+df = coins["DOTUSDT"]
 
 
-# In[60]:
+# In[66]:
 
 
 #Calculate Technical indicator on df
@@ -38,11 +38,11 @@ def ICHIMOKU(df):
     return df
 
 
-# In[61]:
+# In[67]:
 
 
-#updated_df_ICHIMOKU = ICHIMOKU(df)
-#updated_df_ICHIMOKU.head(-100)
+updated_df_ICHIMOKU = ICHIMOKU(df)
+updated_df_ICHIMOKU[-100:]
 
 
 # In[63]:

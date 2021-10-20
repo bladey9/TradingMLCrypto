@@ -44,7 +44,7 @@ def MACD(df):
 
 
 #updated_df_MACD = MACD(df)
-#updated_df_MACD.head(-100)
+#updated_df_MACD[-100:]
 
 
 # In[5]:

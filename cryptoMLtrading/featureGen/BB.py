@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[7]:
 
 
 import pandas as pd
@@ -10,7 +10,7 @@ import LoadDfs
 import matplotlib.pyplot as plt
 
 
-# In[2]:
+# In[13]:
 
 
 #Retrieve df
@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 #df = coins["DOTUSDT"]
 
 
-# In[3]:
+# In[9]:
 
 
 #Calculate Technical indicator on df
@@ -43,11 +43,11 @@ def BB(df):
     return df
 
 
-# In[4]:
+# In[15]:
 
 
 #updated_df_BB = BB(df)
-#updated_df_BB.head(-100)
+#updated_df_BB[-100:]
 
 
 # In[5]:
