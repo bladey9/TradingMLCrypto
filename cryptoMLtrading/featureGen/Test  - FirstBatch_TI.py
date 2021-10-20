@@ -5,6 +5,7 @@
 
 
 import pandas as pd
+pd.options.display.max_columns= None
 import numpy as np
 import LoadDfs
 import talib
@@ -18,6 +19,10 @@ from BB import BB
 from MACD import MACD
 from ICHIMOKU import ICHIMOKU
 from FR import FR
+
+#clean and append labels
+from CLEAN import CLEAN
+from Label import LABEL
 
 
 # In[2]:
@@ -49,14 +54,24 @@ full_df = FR(full_df_ICHIMOKU)
 print("FR completed")
 
 
-# 
-# **Following line saves it as a csv format so you can load it in another notebook. We do our work there and then we talk about how we are going to append it to this file.**
-
-# In[11]:
+# In[ ]:
 
 
 #save file as dataframe with tech indicators
-full_df.to_csv("df_with_TI",index=False)
+
+
+# In[5]:
+
+
+#Appennds labels to it
+full_df_labels = LABEL(full_df)
+full_df_complete = CLEAN(full_df_labels)
+
+
+# In[9]:
+
+
+full_df_complete.to_csv("df_for_model_1.0",index=False)
 
 
 # In[ ]:
