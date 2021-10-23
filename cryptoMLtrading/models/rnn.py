@@ -30,12 +30,12 @@ import matplotlib.pyplot as plt
 # Commented out IPython magic to ensure Python compatibility.
 # %tensorflow_version 1.x
 
-from google.colab import drive
-drive.mount('/content/drive')
+#from google.colab import drive
+#drive.mount('/content/drive')
 
-test_df = pd.read_csv("/content/drive/My Drive/df_for_model_2.0")
-validation_main = test_df[100000:]
-test_df = test_df[:100000]
+#test_df = pd.read_csv("/content/drive/My Drive/df_for_model_2.0")
+#validation_main = test_df[100000:]
+#test_df = test_df[:100000]
 
 def preprocess(test_df):
     sequential_data = []
@@ -54,8 +54,8 @@ def preprocess(test_df):
 
     return np.array(X), y
 
-X_train, Y_train = preprocess(test_df)
-X_valid, Y_valid = preprocess(validation_main)
+#X_train, Y_train = preprocess(test_df)
+#X_valid, Y_valid = preprocess(validation_main)
 
 from sklearn.preprocessing import LabelEncoder
 def encode(Y):
@@ -69,50 +69,50 @@ def encode(Y):
     
     return dummy_y
 
-Y_train = encode(Y_train)
-Y_valid = encode(Y_valid)
+#Y_train = encode(Y_train)
+#Y_valid = encode(Y_valid)
 
-X_train = np.asarray(X_train)
-Y_train = np.asarray(Y_train)
-X_valid = np.asarray(X_valid)
-Y_valid = np.asarray(Y_valid)
+#X_train = np.asarray(X_train)
+#Y_train = np.asarray(Y_train)
+#X_valid = np.asarray(X_valid)
+#Y_valid = np.asarray(Y_valid)
 
-EPOCHS = 10
-BATCH_SIZE = 65
+#EPOCHS = 10
+#BATCH_SIZE = 65
 
-model = Sequential()
-model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
-model.add(Dropout(0.2))
-model.add(BatchNormalization())  #normalizes activation outputs, same reason you want to normalize your input data.
+#model = Sequential()
+#model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
+#model.add(Dropout(0.2))
+#model.add(BatchNormalization())  #normalizes activation outputs, same reason you want to normalize your input data.
 
-model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
-model.add(Dropout(0.1))
-model.add(BatchNormalization())
+#model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
+#model.add(Dropout(0.1))
+#model.add(BatchNormalization())
 
-model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
-model.add(Dropout(0.2))
-model.add(BatchNormalization())  #normalizes activation outputs, same reason you want to normalize your input data.
+#model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
+#model.add(Dropout(0.2))
+#model.add(BatchNormalization())  #normalizes activation outputs, same reason you want to normalize your input data.
 
-model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:])))
-model.add(Dropout(0.1))
-model.add(BatchNormalization())
+#model.add(CuDNNLSTM(128, input_shape=(X_train.shape[1:])))
+#model.add(Dropout(0.1))
+#model.add(BatchNormalization())
 
-model.add(Dense(32, activation='relu'))
-model.add(Dropout(0.2))
+#model.add(Dense(32, activation='relu'))
+#model.add(Dropout(0.2))
 
-model.add(Dense(4,activation='softmax'))
+#model.add(Dense(4,activation='softmax'))
 
 
 #opt = tf.keras.optimizers.Adam(lr = 0.001, decay = 1e-5)
 
-model.compile(loss = "categorical_crossentropy",
-             optimizer = 'adam',
-             metrics = ["accuracy"])
+#model.compile(loss = "categorical_crossentropy",
+#             optimizer = 'adam',
+#             metrics = ["accuracy"])
 
 
 #tensorboard = TensorBoard(log_dir = )
 
-model.fit(X_train, Y_train, batch_size = 64, epochs = 20, validation_data = (X_valid, Y_valid))
+#model.fit(X_train, Y_train, batch_size = 64, epochs = 20, validation_data = (X_valid, Y_valid))
 
 #model.save("/content/drive/My Drive/models/RNN_model.h5")
 
@@ -125,7 +125,7 @@ def true_label(y_test):
         real_values.append(ind)
     return real_values
 
-real_values = true_label(Y_valid)
+#real_values = true_label(Y_valid)
 
 def simulation(preds, truth, maker, taker, starting, leverage, confidence = 0.7):
 
@@ -206,14 +206,14 @@ def simulation(preds, truth, maker, taker, starting, leverage, confidence = 0.7)
     plt.figure(figsize=(12,6))
     plt.plot(balances)
 
-predictions = model.predict(X_valid)
-maker = 0.00018
-taker = 0.00018
-starting = 1000
-leverage = 1
-confidence = []
+#predictions = model.predict(X_valid)
+#maker = 0.00018
+#taker = 0.00018
+#starting = 1000
+#leverage = 1
+#confidence = []
 
-for i in range(20,80,2):
-    confidence.append(i/100)
-for confidence in confidence:   
-    simulation(predictions,real_values,maker,taker, starting, leverage, confidence)
+#for i in range(20,80,2):
+#    confidence.append(i/100)
+#for confidence in confidence:   
+#    simulation(predictions,real_values,maker,taker, starting, leverage, confidence)
