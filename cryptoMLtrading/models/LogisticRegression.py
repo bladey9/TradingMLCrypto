@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[316]:
+# In[1]:
 
 
 from sklearn.linear_model import LogisticRegression
@@ -10,13 +10,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn import metrics
 import pickle
-from sklearn.model_selection import train_test_split
 
 
 # In[2]:
 
 
-data = pd.read_csv('../featureGen/df_for_model_3.0.zip')
+data = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
 print(data.shape)
 data.head()
 
@@ -31,24 +30,30 @@ y = data.loc[:, data.columns == 'label']
 #y.head()
 
 
-# In[26]:
+# In[4]:
 
 
-X_train,X_test,y_train, y_test = train_test_split(X, y, test_size = 0.2, shuffle=False)
+# This is hard-codedin order to have a set of training data used for weak learners, another for the ensemble final model
+# and a set of test data. 
+X_train = X[:50000]
+y_train = y[:50000]
+X_test = X[100000:]
+y_test = y[100000:]
+
 print('X_train:', len(X_train))
 print('y_train:', len(y_train), '\n')
 print('X_test:', len(X_test))
 print('y_test:', len(y_test))
 
 
-# In[6]:
+# In[5]:
 
 
 log_reg = LogisticRegression(verbose=1)
 log_reg.fit(X_train.values, y_train.values)
 
 
-# In[7]:
+# In[6]:
 
 
 predictions = log_reg.predict(X_test.values) # this will return the class that it belongs to (e.g 1, 2, 3 or 4)
@@ -58,14 +63,14 @@ print('Category 3 was predicted:', list(predictions).count(3))
 print('Category 4 was predicted:', list(predictions).count(4))
 
 
-# In[143]:
+# In[7]:
 
 
 predictions_proba = log_reg.predict_proba(X_test.values)
 predictions_proba
 
 
-# In[9]:
+# In[8]:
 
 
 score = log_reg.score(X_test.values, y_test.values)
@@ -85,7 +90,7 @@ plt.title(all_sample_title, size = 15);
 # - 3 -- 0.3% up and also 0.3% down
 # - 4 -- 0.5% down before 0.3% up
 
-# In[219]:
+# In[9]:
 
 
 max_ = 4
@@ -96,7 +101,7 @@ for i in range(max_):
 
 # ## Trading simulation
 
-# In[293]:
+# In[10]:
 
 
 def simulation_label(y_test, initial_investment, maker, taker, confidence=None, leverage=1, strategy='longshort'):
@@ -153,7 +158,7 @@ def simulation_label(y_test, initial_investment, maker, taker, confidence=None, 
     return balance_record
 
 
-# In[294]:
+# In[14]:
 
 
 def plot_balance(balance_record, initial_investment,leverage=1):
@@ -170,7 +175,7 @@ def plot_balance(balance_record, initial_investment,leverage=1):
     print(f'Final balance record: {balance_record[-1]}€')
 
 
-# In[313]:
+# In[15]:
 
 
 maker = 0.0002 # limit order
@@ -180,7 +185,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[314]:
+# In[16]:
 
 
 strategy = 'long' # can be 'long' or 'short' or 'longshort'
@@ -188,7 +193,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[304]:
+# In[17]:
 
 
 maker = 0.0002 # limit order
@@ -198,7 +203,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[305]:
+# In[18]:
 
 
 strategy = 'short' # can be 'long' or 'short' or 'longshort'
@@ -206,7 +211,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[306]:
+# In[19]:
 
 
 # In this case, the model performed better with the longing strategy than shorting. This could be due
@@ -214,7 +219,7 @@ plot_balance(balance_record, initial_investment,leverage)
 # On the other hand, it could also mean that the model is better at identifying long profitable positions than short ones.
 
 
-# In[307]:
+# In[20]:
 
 
 maker = 0.0002 # limit order
@@ -224,7 +229,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[308]:
+# In[21]:
 
 
 strategy = 'longshort' # can be 'long' or 'short' or 'longshort'
@@ -232,11 +237,11 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[317]:
+# In[23]:
 
 
 # save the model to disk
-filename = 'LR_model_1.0.sav'
+filename = 'trained_models_2/LR_model_1_EE.sav'
 pickle.dump(log_reg, open(filename, 'wb'))
   
 # load the model from disk

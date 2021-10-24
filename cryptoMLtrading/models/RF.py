@@ -12,7 +12,6 @@ from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import cross_val_score, cross_val_predict
 from sklearn.metrics import confusion_matrix
 from sklearn import metrics
-from sklearn.model_selection import train_test_split
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,7 +21,8 @@ import pickle
 # In[2]:
 
 
-data = pd.read_csv('../featureGen/df_for_model_3.0.zip')
+data = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
+print(data.shape)
 data.head()
 
 
@@ -39,7 +39,13 @@ y = data.loc[:, data.columns == 'label']
 # In[4]:
 
 
-X_train,X_test,y_train, y_test = train_test_split(X, y, test_size = 0.2, shuffle=False)
+# This is hard-codedin order to have a set of training data used for weak learners, another for the ensemble final model
+# and a set of test data. 
+X_train = X[:50000]
+y_train = y[:50000]
+X_test = X[100000:]
+y_test = y[100000:]
+
 print('X_train:', len(X_train))
 print('y_train:', len(y_train), '\n')
 print('X_test:', len(X_test))
@@ -91,11 +97,11 @@ all_sample_title = 'Accuracy Score: {0}'.format(score)
 plt.title(all_sample_title, size = 15);
 
 
-# In[20]:
+# In[9]:
 
 
 # save the model to disk
-model_name = 'RF_model_1.0.sav'
+model_name = 'trained_models_2/RF_model_1_EE.sav'
 pickle.dump(ada_clf, open(model_name, 'wb'))
   
 # load the model from disk
@@ -110,7 +116,7 @@ pickle.dump(ada_clf, open(model_name, 'wb'))
 # - 3 -- 0.3% up and also 0.3% down
 # - 4 -- 0.5% down before 0.3% up
 
-# In[9]:
+# In[10]:
 
 
 max_ = 4
@@ -121,7 +127,7 @@ for i in range(max_):
 
 # ## Trading simulation
 
-# In[10]:
+# In[11]:
 
 
 def simulation_label(y_test, initial_investment, maker, taker, confidence=None, leverage=1, strategy='longshort'):
@@ -178,7 +184,7 @@ def simulation_label(y_test, initial_investment, maker, taker, confidence=None, 
     return balance_record
 
 
-# In[11]:
+# In[12]:
 
 
 def plot_balance(balance_record, initial_investment,leverage=1):
@@ -195,7 +201,7 @@ def plot_balance(balance_record, initial_investment,leverage=1):
     print(f'Final balance record: {balance_record[-1]}€')
 
 
-# In[12]:
+# In[13]:
 
 
 maker = 0.0002 # limit order
@@ -205,7 +211,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[13]:
+# In[14]:
 
 
 strategy = 'long' # can be 'long' or 'short'
@@ -213,7 +219,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[14]:
+# In[15]:
 
 
 maker = 0.0002 # limit order
@@ -223,7 +229,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[15]:
+# In[16]:
 
 
 strategy = 'short' # can be 'long' or 'short'
@@ -231,7 +237,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[16]:
+# In[17]:
 
 
 maker = 0.0002 # limit order
@@ -241,7 +247,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[17]:
+# In[18]:
 
 
 strategy = 'longshort' # can be 'long' or 'short'
