@@ -131,3 +131,6 @@ dmypy.json
 *.xml
 *.ipynb
 cryptoMLtrading/featureGen/NNdata.csv
+cryptoMLtrading/models/.DS_Store
+cryptoMLtrading/models/.DS_Store
+cryptoMLtrading/.DS_Store
