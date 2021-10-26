@@ -36,7 +36,7 @@ test_df = test_df[:50000]
 # In[1]:
 
 
-get_ipython().run_line_magic('tensorflow_version', '1.x')
+#get_ipython().run_line_magic('tensorflow_version', '1.x')
 
 
 # In[ ]:
@@ -237,7 +237,7 @@ print("accuracy", accuracy/len(predictions_full), "\n")
 # In[ ]:
 
 
-tensorflow_version 1.x
+#tensorflow_version 1.x
 
 
 # In[ ]:
