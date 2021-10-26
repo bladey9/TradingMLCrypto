@@ -134,3 +134,8 @@ cryptoMLtrading/featureGen/NNdata.csv
 cryptoMLtrading/models/.DS_Store
 cryptoMLtrading/models/.DS_Store
 cryptoMLtrading/.DS_Store
+cryptoMLtrading/main/config.py
+cryptoMLtrading/models/trained_models/RF_model_1.0.rar
+cryptoMLtrading/models/trained_models/RF_model_1.0.sav
+cryptoMLtrading/models/trained_models_2/RF_model_1_EE.rar
+cryptoMLtrading/models/trained_models_2/RF_model_1_EE.sav
