@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[25]:
+# In[3]:
 
 
 import pandas as pd
@@ -33,7 +33,7 @@ from tensorflow.python.keras.callbacks import EarlyStopping
 pd.options.display.max_columns = None
 
 
-# In[42]:
+# In[4]:
 
 
 concat_data = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_SOLUSDT.csv.zip')
@@ -47,7 +47,7 @@ sequenced_data = sequenced_data[1:]
 
 
 
-# In[43]:
+# In[5]:
 
 
 # Split X and y data into 2 dataframes
@@ -55,7 +55,7 @@ X_concat = concat_data.loc[:, concat_data.columns != 'label']
 y_concat = concat_data.loc[:, concat_data.columns == 'label']
 
 
-# In[64]:
+# In[6]:
 
 
 rv = []
@@ -72,7 +72,7 @@ print(rv.count(2)/len(y_concat))
 print(rv.count(3)/len(y_concat))
 
 
-# In[35]:
+# In[7]:
 
 
 
@@ -103,7 +103,7 @@ def preprocess(test_df):
     return np.array(X), y
 
 
-# In[45]:
+# In[8]:
 
 
 #RNN sequenced data
@@ -117,14 +117,14 @@ y_concat = encode(y_concat)
 y_seq = encode(y_seq)
 
 
-# In[46]:
+# In[9]:
 
 
 print(len(X_concat) == len(X_seq))
 print(len(y_concat) == len(y_seq))
 
 
-# In[53]:
+# In[13]:
 
 
 RF = pickle.load(open('trained_models_2/RF_model_1_EE.sav', 'rb'))
@@ -138,13 +138,13 @@ RNN = keras.models.load_model('trained_models_2/RNN_model_2_EE')
 #print(f'SVM Accuracy Score: {SVM.score(X_test, y_test)}')
 
 
-# In[55]:
+# In[14]:
 
 
 ensemble = keras.models.load_model("trained_models_2/ensemble_1")
 
 
-# In[56]:
+# In[15]:
 
 
 RF_preds_for_ensemble = RF.predict_proba(X_concat.values)
@@ -157,7 +157,7 @@ concat_preds_EE = np.concatenate((RF_preds_for_ensemble,LR_preds_for_ensemble,NN
 ensemble_preds = ensemble.predict(concat_preds_EE)
 
 
-# In[58]:
+# In[16]:
 
 
 models = {"RF":RF_preds_for_ensemble,"LR":LR_preds_for_ensemble,"NN1":NN1_preds_for_ensemble,"NN2": NN2_preds_for_ensemble,"RNN":RNN_preds_for_ensemble, "Ensemble":ensemble_preds}
@@ -184,13 +184,13 @@ for key, values in models.items():
     
 
 
-# In[127]:
+# In[ ]:
 
 
 RF_preds_for_ensemble.shape == LR_preds_for_ensemble.shape == NN1_preds_for_ensemble.shape == NN2_preds_for_ensemble.shape == RNN_preds_for_ensemble.shape
 
 
-# In[132]:
+# In[ ]:
 
 
 concat_preds_EE_train = np.concatenate((RF_preds_for_ensemble,LR_preds_for_ensemble,NN1_preds_for_ensemble,NN2_preds_for_ensemble,RNN_preds_for_ensemble), axis=1)
@@ -198,7 +198,7 @@ concat_preds_EE_valid = np.concatenate((RF_preds_for_ensemble_valid,LR_preds_for
 concat_preds_EE_test = np.concatenate((RF_preds_for_ensemble_test,LR_preds_for_ensemble_test,NN1_preds_for_ensemble_test,NN2_preds_for_ensemble_test,RNN_preds_for_ensemble_test), axis=1)
 
 
-# In[139]:
+# In[ ]:
 
 
 
@@ -241,7 +241,7 @@ for i in range(len(predictions_full)):
 print(accuracy/len(predictions_full))
 
 
-# In[141]:
+# In[ ]:
 
 
 main_model.save("trained_models/ensemble_1")

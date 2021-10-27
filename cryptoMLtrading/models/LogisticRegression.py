@@ -37,8 +37,12 @@ y = data.loc[:, data.columns == 'label']
 # and a set of test data. 
 X_train = X[:50000]
 y_train = y[:50000]
+
 X_test = X[100000:]
 y_test = y[100000:]
+
+X_ensemble = X[50000:100000]
+Y_ensemble = y[50000:100000]
 
 print('X_train:', len(X_train))
 print('y_train:', len(y_train), '\n')
@@ -46,14 +50,14 @@ print('X_test:', len(X_test))
 print('y_test:', len(y_test))
 
 
-# In[5]:
+# In[11]:
 
 
 log_reg = LogisticRegression(verbose=1)
 log_reg.fit(X_train.values, y_train.values)
 
 
-# In[6]:
+# In[12]:
 
 
 predictions = log_reg.predict(X_test.values) # this will return the class that it belongs to (e.g 1, 2, 3 or 4)
@@ -63,14 +67,14 @@ print('Category 3 was predicted:', list(predictions).count(3))
 print('Category 4 was predicted:', list(predictions).count(4))
 
 
-# In[7]:
+# In[13]:
 
 
 predictions_proba = log_reg.predict_proba(X_test.values)
 predictions_proba
 
 
-# In[8]:
+# In[15]:
 
 
 score = log_reg.score(X_test.values, y_test.values)
@@ -90,7 +94,7 @@ plt.title(all_sample_title, size = 15);
 # - 3 -- 0.3% up and also 0.3% down
 # - 4 -- 0.5% down before 0.3% up
 
-# In[9]:
+# In[16]:
 
 
 max_ = 4
@@ -101,7 +105,7 @@ for i in range(max_):
 
 # ## Trading simulation
 
-# In[10]:
+# In[17]:
 
 
 def simulation_label(y_test, initial_investment, maker, taker, confidence=None, leverage=1, strategy='longshort'):
@@ -158,7 +162,7 @@ def simulation_label(y_test, initial_investment, maker, taker, confidence=None, 
     return balance_record
 
 
-# In[14]:
+# In[18]:
 
 
 def plot_balance(balance_record, initial_investment,leverage=1):
@@ -175,7 +179,7 @@ def plot_balance(balance_record, initial_investment,leverage=1):
     print(f'Final balance record: {balance_record[-1]}€')
 
 
-# In[15]:
+# In[19]:
 
 
 maker = 0.0002 # limit order
@@ -185,7 +189,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[16]:
+# In[20]:
 
 
 strategy = 'long' # can be 'long' or 'short' or 'longshort'
@@ -193,7 +197,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[17]:
+# In[21]:
 
 
 maker = 0.0002 # limit order
@@ -203,7 +207,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[18]:
+# In[22]:
 
 
 strategy = 'short' # can be 'long' or 'short' or 'longshort'
@@ -211,7 +215,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[19]:
+# In[23]:
 
 
 # In this case, the model performed better with the longing strategy than shorting. This could be due
@@ -219,7 +223,7 @@ plot_balance(balance_record, initial_investment,leverage)
 # On the other hand, it could also mean that the model is better at identifying long profitable positions than short ones.
 
 
-# In[20]:
+# In[24]:
 
 
 maker = 0.0002 # limit order
@@ -229,7 +233,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[21]:
+# In[25]:
 
 
 strategy = 'longshort' # can be 'long' or 'short' or 'longshort'
@@ -237,7 +241,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[23]:
+# In[26]:
 
 
 # save the model to disk

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import pandas as pd
@@ -25,21 +25,21 @@ from collections import deque
 import matplotlib.pyplot as plt
 
 
-# In[ ]:
+# In[2]:
 
 
-test_df = pd.read_csv("../featureGen/df_for_model_2.0")
+test_df = pd.read_csv('../featureGen/PROCESSED_COINS/Sequenced/DF_sequence_DOTUSDT.csv')
 validation_main = test_df[100000:]
 test_df = test_df[:50000]
 
 
-# In[1]:
+# In[3]:
 
 
-#get_ipython().run_line_magic('tensorflow_version', '1.x')
+#%tensorflow_version 1.x
 
 
-# In[ ]:
+# In[4]:
 
 
 def preprocess(test_df):
@@ -60,14 +60,14 @@ def preprocess(test_df):
     return np.array(X), y
 
 
-# In[ ]:
+# In[5]:
 
 
 X_train, Y_train = preprocess(test_df)
 X_valid, Y_valid = preprocess(validation_main)
 
 
-# In[ ]:
+# In[6]:
 
 
 from sklearn.preprocessing import LabelEncoder
@@ -83,7 +83,7 @@ def encode(Y):
     return dummy_y
 
 
-# In[ ]:
+# In[7]:
 
 
 Y_train = encode(Y_train)
@@ -97,7 +97,7 @@ Y_valid = np.asarray(Y_valid)
 
 # ## Grid Search on RNN
 
-# In[ ]:
+# In[8]:
 
 
 layers = 4
@@ -179,7 +179,7 @@ for node in nodes:
                 print("accuracy", accuracy/len(predictions_full), "\n")
 
 
-# In[ ]:
+# In[10]:
 
 
 
@@ -210,7 +210,7 @@ model.compile(loss = "categorical_crossentropy",
 print(f"Node: {32}, layer: {2}, drop: {0.2}, Epochs: {20}")
 
 
-model.fit(X_train, Y_train, batch_size = 64, epochs = 20, validation_data = (X_valid, Y_valid),verbose = 1)
+model.fit(X_train, Y_train, batch_size = 64, epochs = 10, validation_data = (X_valid, Y_valid),verbose = 1)
 
 preds = model.predict(X_valid)
 
@@ -234,19 +234,19 @@ time+=1
 print("accuracy", accuracy/len(predictions_full), "\n")
 
 
-# In[ ]:
-
-
-#tensorflow_version 1.x
-
-
-# In[ ]:
+# In[13]:
 
 
 model.save("../models/trained_models_2/RNN_model_1_EE")
 
 
-# In[ ]:
+# In[11]:
+
+
+test_df.shape
+
+
+# In[12]:
 
 
 preds
