@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 from sklearn.ensemble import RandomForestClassifier
@@ -18,45 +18,39 @@ import numpy as np
 import pickle
 
 
-# In[2]:
+# In[ ]:
 
 
-data = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
-print(data.shape)
-data.head()
+train = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN.csv')
+valid = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID.csv')
+test = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
 
 
-# In[3]:
+# In[ ]:
 
 
-# Split X and y data into 2 dataframes
-X = data.loc[:, data.columns != 'label']
-#X.head()
-y = data.loc[:, data.columns == 'label']
-#y.head()
+def split(dataframe):
+    # Split X and y data into 2 dataframes
+    X_train = dataframe.loc[:, dataframe.columns != 'label']
+    #X.head()
+    y_train = dataframe.loc[:, dataframe.columns == 'label']
+    #y.head()
+    return X_train, y_train
 
 
-# In[4]:
+# In[ ]:
 
 
-# This is hard-codedin order to have a set of training data used for weak learners, another for the ensemble final model
-# and a set of test data. 
-X_train = X[:50000]
-y_train = y[:50000]
-X_test = X[100000:]
-y_test = y[100000:]
-
-print('X_train:', len(X_train))
-print('y_train:', len(y_train), '\n')
-print('X_test:', len(X_test))
-print('y_test:', len(y_test))
+X_train, y_train = split(train)
+X_valid, y_valid = split(valid)
+X_test, y_test = split(test)
 
 
 # Unfortunately, the statement below cannot be performed since the training data is a very large tabular and the trade off between time-resources and performance is not worth it. Searching for optimal parameters in this case is better than waiting X hours to perform a grid search on 100 random combinations.
 # 
 # *We could go read the research papers on the random forest and try to theorize the best hyperparameters, but a more efficient use of our time is just to try out a wide range of values with a randomized grid search and see what works.*
 
-# In[5]:
+# In[ ]:
 
 
 from sklearn.ensemble import AdaBoostClassifier
@@ -64,7 +58,7 @@ ada_clf = AdaBoostClassifier(RandomForestClassifier(verbose=1), n_estimators=500
 ada_clf.fit(X_train, y_train)
 
 
-# In[6]:
+# In[ ]:
 
 
 predictions = ada_clf.predict(X_test) # this will return the class that it belongs to (e.g 1, 2, 3 or 4)
@@ -75,7 +69,7 @@ print('Category 3 was predicted:', list(predictions).count(3))
 print('Category 4 was predicted:', list(predictions).count(4))
 
 
-# In[7]:
+# In[ ]:
 
 
 # See the percentage score of each class (confidence score)
@@ -83,7 +77,7 @@ predictions_proba = ada_clf.decision_function(X_test)
 predictions_proba
 
 
-# In[8]:
+# In[ ]:
 
 
 score = ada_clf.score(X_test.values, y_test.values)
@@ -97,12 +91,12 @@ all_sample_title = 'Accuracy Score: {0}'.format(score)
 plt.title(all_sample_title, size = 15);
 
 
-# In[9]:
+# In[ ]:
 
 
 # save the model to disk
-model_name = 'trained_models_2/RF_model_1_EE.sav'
-pickle.dump(ada_clf, open(model_name, 'wb'))
+# model_name = 'trained_models_2/RF_model_1_EE.sav'
+# pickle.dump(ada_clf, open(model_name, 'wb'))
   
 # load the model from disk
 #loaded_model = pickle.load(open(filename, 'rb'))
@@ -116,7 +110,7 @@ pickle.dump(ada_clf, open(model_name, 'wb'))
 # - 3 -- 0.3% up and also 0.3% down
 # - 4 -- 0.5% down before 0.3% up
 
-# In[10]:
+# In[ ]:
 
 
 max_ = 4
@@ -127,7 +121,7 @@ for i in range(max_):
 
 # ## Trading simulation
 
-# In[11]:
+# In[ ]:
 
 
 def simulation_label(y_test, initial_investment, maker, taker, confidence=None, leverage=1, strategy='longshort'):
@@ -184,7 +178,7 @@ def simulation_label(y_test, initial_investment, maker, taker, confidence=None, 
     return balance_record
 
 
-# In[12]:
+# In[ ]:
 
 
 def plot_balance(balance_record, initial_investment,leverage=1):
@@ -201,7 +195,7 @@ def plot_balance(balance_record, initial_investment,leverage=1):
     print(f'Final balance record: {balance_record[-1]}€')
 
 
-# In[13]:
+# In[ ]:
 
 
 maker = 0.0002 # limit order
@@ -211,7 +205,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[14]:
+# In[ ]:
 
 
 strategy = 'long' # can be 'long' or 'short'
@@ -219,7 +213,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[15]:
+# In[ ]:
 
 
 maker = 0.0002 # limit order
@@ -229,7 +223,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[16]:
+# In[ ]:
 
 
 strategy = 'short' # can be 'long' or 'short'
@@ -237,22 +231,28 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[17]:
+# In[ ]:
 
 
 maker = 0.0002 # limit order
-taker = 0.0004 # market order
+taker = 0.0002 # market order
 confidence = 0.30 # this will simulate only trades where predictions have a minimum confidence of X%.
 initial_investment = 1000
 leverage=1
 
 
-# In[18]:
+# In[ ]:
 
 
 strategy = 'longshort' # can be 'long' or 'short'
 balance_record = simulation_label(y_test, initial_investment, maker, taker, confidence, leverage, strategy)
 plot_balance(balance_record, initial_investment,leverage)
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

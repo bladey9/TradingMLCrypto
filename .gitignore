@@ -139,3 +139,4 @@ cryptoMLtrading/models/trained_models/RF_model_1.0.rar
 cryptoMLtrading/models/trained_models/RF_model_1.0.sav
 cryptoMLtrading/models/trained_models_2/RF_model_1_EE.rar
 cryptoMLtrading/models/trained_models_2/RF_model_1_EE.sav
+*.csv

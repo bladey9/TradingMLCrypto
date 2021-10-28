@@ -12,52 +12,42 @@ from sklearn import metrics
 import pickle
 
 
-# In[2]:
+# In[ ]:
 
 
-data = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
-print(data.shape)
-data.head()
+train = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN.csv')
+valid = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID.csv')
+test = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
 
 
-# In[3]:
+# In[ ]:
 
 
-# Split X and y data into 2 dataframes
-X = data.loc[:, data.columns != 'label']
-#X.head()
-y = data.loc[:, data.columns == 'label']
-#y.head()
+def split(dataframe):
+    # Split X and y data into 2 dataframes
+    X_train = dataframe.loc[:, dataframe.columns != 'label']
+    #X.head()
+    y_train = dataframe.loc[:, dataframe.columns == 'label']
+    #y.head()
+    return X_train, y_train
 
 
-# In[4]:
+# In[ ]:
 
 
-# This is hard-codedin order to have a set of training data used for weak learners, another for the ensemble final model
-# and a set of test data. 
-X_train = X[:50000]
-y_train = y[:50000]
-
-X_test = X[100000:]
-y_test = y[100000:]
-
-X_ensemble = X[50000:100000]
-Y_ensemble = y[50000:100000]
-
-print('X_train:', len(X_train))
-print('y_train:', len(y_train), '\n')
-print('X_test:', len(X_test))
-print('y_test:', len(y_test))
+X_train, y_train = split(train)
+X_valid, y_valid = split(valid)
+X_test, y_test = split(test)
 
 
-# In[11]:
+# In[ ]:
 
 
 log_reg = LogisticRegression(verbose=1)
 log_reg.fit(X_train.values, y_train.values)
 
 
-# In[12]:
+# In[ ]:
 
 
 predictions = log_reg.predict(X_test.values) # this will return the class that it belongs to (e.g 1, 2, 3 or 4)
@@ -67,14 +57,14 @@ print('Category 3 was predicted:', list(predictions).count(3))
 print('Category 4 was predicted:', list(predictions).count(4))
 
 
-# In[13]:
+# In[ ]:
 
 
 predictions_proba = log_reg.predict_proba(X_test.values)
 predictions_proba
 
 
-# In[15]:
+# In[ ]:
 
 
 score = log_reg.score(X_test.values, y_test.values)
@@ -94,7 +84,7 @@ plt.title(all_sample_title, size = 15);
 # - 3 -- 0.3% up and also 0.3% down
 # - 4 -- 0.5% down before 0.3% up
 
-# In[16]:
+# In[ ]:
 
 
 max_ = 4
@@ -105,7 +95,7 @@ for i in range(max_):
 
 # ## Trading simulation
 
-# In[17]:
+# In[ ]:
 
 
 def simulation_label(y_test, initial_investment, maker, taker, confidence=None, leverage=1, strategy='longshort'):
@@ -162,7 +152,7 @@ def simulation_label(y_test, initial_investment, maker, taker, confidence=None, 
     return balance_record
 
 
-# In[18]:
+# In[ ]:
 
 
 def plot_balance(balance_record, initial_investment,leverage=1):
@@ -179,7 +169,7 @@ def plot_balance(balance_record, initial_investment,leverage=1):
     print(f'Final balance record: {balance_record[-1]}€')
 
 
-# In[19]:
+# In[ ]:
 
 
 maker = 0.0002 # limit order
@@ -189,7 +179,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[20]:
+# In[ ]:
 
 
 strategy = 'long' # can be 'long' or 'short' or 'longshort'
@@ -197,7 +187,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[21]:
+# In[ ]:
 
 
 maker = 0.0002 # limit order
@@ -207,7 +197,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[22]:
+# In[ ]:
 
 
 strategy = 'short' # can be 'long' or 'short' or 'longshort'
@@ -215,7 +205,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[23]:
+# In[ ]:
 
 
 # In this case, the model performed better with the longing strategy than shorting. This could be due
@@ -223,7 +213,7 @@ plot_balance(balance_record, initial_investment,leverage)
 # On the other hand, it could also mean that the model is better at identifying long profitable positions than short ones.
 
 
-# In[24]:
+# In[ ]:
 
 
 maker = 0.0002 # limit order
@@ -233,7 +223,7 @@ initial_investment = 1000
 leverage=1
 
 
-# In[25]:
+# In[ ]:
 
 
 strategy = 'longshort' # can be 'long' or 'short' or 'longshort'
@@ -241,7 +231,7 @@ balance_record = simulation_label(y_test, initial_investment, maker, taker, conf
 plot_balance(balance_record, initial_investment,leverage)
 
 
-# In[26]:
+# In[ ]:
 
 
 # save the model to disk
