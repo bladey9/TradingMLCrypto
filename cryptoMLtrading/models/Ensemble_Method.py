@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[1]:
 
 
 import pandas as pd
@@ -32,34 +32,34 @@ from tensorflow.python.keras.layers import Dense
 from tensorflow.python.keras.callbacks import EarlyStopping
 
 
-# In[6]:
+# In[2]:
 
 
-concat_data = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
-sequenced_data = pd.read_csv('../featureGen/PROCESSED_COINS/Sequenced/DF_sequence_DOTUSDT.csv')
+# Loading concatenated dataframes
+train_concat = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_ENSEMBLE.csv')
+valid_concat = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_ENSEMBLE.csv')
+test_concat = pd.read_csv('../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
+
+# Loading sequenced dataframes
+train_sequenced = pd.read_csv('../featureGen/PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TRAIN_ENSEMBLE.csv')
+valid_sequenced = pd.read_csv('../featureGen/PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_VALID_ENSEMBLE.csv')
+test_sequenced = pd.read_csv('../featureGen/PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TEST.csv')
 
 
-# In[7]:
+# In[3]:
 
 
-len(sequenced_data)
+def split(dataframe):
+    # Split X and y data into 2 dataframes
+    X_train = dataframe.loc[:, dataframe.columns != 'label']
+    #X.head()
+    y_train = dataframe.loc[:, dataframe.columns == 'label']
+    #y.head()
+    return X_train, y_train
 
 
-# In[8]:
+# In[4]:
 
-
-# Split X and y data into 2 dataframes
-X_concat = concat_data.loc[:, concat_data.columns != 'label']
-y_concat = concat_data.loc[:, concat_data.columns == 'label']
-
-
-# In[9]:
-
-
-
-sequenced_data_EE_train = sequenced_data[50001:92000]
-sequenced_data_EE_valid = sequenced_data[92001:100000]
-sequenced_data_EE_test = sequenced_data[100001:]
 
 def encode(Y):
     #Method to one-hot encode vectors
@@ -88,89 +88,85 @@ def preprocess(test_df):
     return np.array(X), y
 
 
-# In[10]:
+# In[6]:
 
-
-#RNN sequenced data
-X_train_EE_RNN,y_train_EE_RNN = preprocess(sequenced_data_EE_train)
-X_valid_EE_RNN, y_valid_EE_RNN = preprocess(sequenced_data_EE_valid)
-X_test_EE_RNN,y_test_EE_RNN = preprocess(sequenced_data_EE_test)
 
 #Concat data
-X_train_EE_concat = X_concat[50000:91995]
-X_valid_EE_concat = X_concat[92000:99995]
-X_test_EE_concat = X_concat[100000:]
+X_train_concat, y_train_concat = split(train_concat[4:])
+X_valid_concat, y_valid_concat = split(valid_concat[4:])
+X_test_concat, y_test_concat = split(test_concat[4:])
 
-y_train_EE_concat = y_concat[50000:91995]
-y_valid_EE_concat = y_concat[92000:99995]
-y_test_EE_concat = y_concat[100000:]
+#RNN sequenced data
+X_train_EE_RNN,y_train_EE_RNN = preprocess(train_sequenced)
+X_valid_EE_RNN, y_valid_EE_RNN = preprocess(valid_sequenced)
+X_test_EE_RNN,y_test_EE_RNN = preprocess(test_sequenced)
 
 #NN label encoding
-y_train_EE_concat_NN = encode(y_train_EE_concat)
-y_valid_EE_concat_NN = encode(y_valid_EE_concat)
-y_test_EE_concat_NN = encode(y_test_EE_concat)
+y_train_EE_concat_NN = encode(y_train_concat)
+y_valid_EE_concat_NN = encode(y_valid_concat)
+y_test_EE_concat_NN = encode(y_test_concat)
 
 y_train_EE_RNN = encode(y_train_EE_RNN)
 y_valid_EE_RNN = encode(y_valid_EE_RNN)
 y_test_EE_RNN = encode(y_test_EE_RNN)
 
 
+# In[10]:
+
+
+print(len(X_test_concat) == len(X_test_EE_RNN))
+print(len(y_train_concat) == len(y_train_EE_RNN))
+print(len(y_test_concat) == len(y_test_EE_RNN))
+print(len(X_valid_concat) == len(X_valid_EE_RNN))
+print(len(y_valid_concat) == len(y_valid_EE_RNN))
+
+
 # In[11]:
 
 
-print(len(X_train_EE_concat) == len(X_train_EE_RNN))
-print(len(X_test_EE_concat) == len(X_test_EE_RNN))
-print(len(y_train_EE_concat) == len(y_train_EE_RNN))
-print(len(y_test_EE_concat) == len(y_test_EE_RNN))
-print(len(X_valid_EE_concat) == len(X_valid_EE_RNN))
-print(len(y_valid_EE_concat) == len(y_valid_EE_RNN))
+RF = pickle.load(open('trained_models_2/RF_model_1_EE.sav', 'rb'))
+LR = pickle.load(open('trained_models_2/LR_model_1_EE.sav', 'rb'))
+NN1 = keras.models.load_model('trained_models_2/NN_model_1_All_coins_EE')
+NN2 = keras.models.load_model('trained_models_2/NN_model_2_All_coins_EE')
+RNN = keras.models.load_model('trained_models_2/RNN_model_1_ALL_COINS_EE')
 
 
 # In[12]:
 
 
-RF = pickle.load(open('trained_models_2/RF_model_1_EE.sav', 'rb'))
-#print(f'Random Forest Accuracy Score: {RF.score(X_test, y_test)}')
-LR = pickle.load(open('trained_models_2/LR_model_1_EE.sav', 'rb'))
-#print(f'Logistic Regression Accuracy Score: {LR.score(X_test, y_test)}')
-NN1 = keras.models.load_model('trained_models_2/NN_model_1_EE')
-NN2 = keras.models.load_model('trained_models_2/NN_model_2_EE')
-RNN = keras.models.load_model('trained_models_2/RNN_model_2_EE')
-#SVM = pickle.load(open('trained_models/SVM_model_1.0.sav', 'rb'))
-#print(f'SVM Accuracy Score: {SVM.score(X_test, y_test)}')
+RF_preds_for_ensemble = RF.predict_proba(X_train_concat.values)
+print('RF DONE')
+LR_preds_for_ensemble = LR.predict_proba(X_train_concat.values)
+print('LR DONE')
+NN1_preds_for_ensemble = NN1.predict(X_train_concat.values)
+print('NN1 DONE')
+NN2_preds_for_ensemble = NN2.predict(X_train_concat.values)
+print('NN2 DONE')
+RNN_preds_for_ensemble = RNN.predict(X_train_EE_RNN)
+print('RNN DONE')
+
+
+# In[16]:
+
+
+RF_preds_for_ensemble_valid = RF.predict_proba(X_valid_concat.values)
+LR_preds_for_ensemble_valid  = LR.predict_proba(X_valid_concat.values)
+NN1_preds_for_ensemble_valid  = NN1.predict(X_valid_concat.values)
+NN2_preds_for_ensemble_valid  = NN2.predict(X_valid_concat.values)
+RNN_preds_for_ensemble_valid  = RNN.predict(X_valid_EE_RNN)
 
 
 # In[13]:
 
 
-RF_preds_for_ensemble = RF.predict_proba(X_train_EE_concat.values)
-LR_preds_for_ensemble = LR.predict_proba(X_train_EE_concat.values)
-NN1_preds_for_ensemble = NN1.predict(X_train_EE_concat.values)
-NN2_preds_for_ensemble = NN2.predict(X_train_EE_concat.values)
-RNN_preds_for_ensemble = RNN.predict(X_train_EE_RNN)
-
-
-# In[14]:
-
-
-RF_preds_for_ensemble_valid = RF.predict_proba(X_valid_EE_concat.values)
-LR_preds_for_ensemble_valid  = LR.predict_proba(X_valid_EE_concat.values)
-NN1_preds_for_ensemble_valid  = NN1.predict(X_valid_EE_concat.values)
-NN2_preds_for_ensemble_valid  = NN2.predict(X_valid_EE_concat.values)
-RNN_preds_for_ensemble_valid  = RNN.predict(X_valid_EE_RNN)
-
-
-# In[15]:
-
-
-RF_preds_for_ensemble_test = RF.predict_proba(X_test_EE_concat.values)
-LR_preds_for_ensemble_test = LR.predict_proba(X_test_EE_concat.values)
-NN1_preds_for_ensemble_test = NN1.predict(X_test_EE_concat.values)
-NN2_preds_for_ensemble_test = NN2.predict(X_test_EE_concat.values)
+RF_preds_for_ensemble_test = RF.predict_proba(X_test_concat.values)
+LR_preds_for_ensemble_test = LR.predict_proba(X_test_concat.values)
+NN1_preds_for_ensemble_test = NN1.predict(X_test_concat.values)
+NN2_preds_for_ensemble_test = NN2.predict(X_test_concat.values)
 RNN_preds_for_ensemble_test = RNN.predict(X_test_EE_RNN)
 
 
-# In[16]:
+# In[14]:
 
 
 models_E = [RF_preds_for_ensemble,LR_preds_for_ensemble,NN1_preds_for_ensemble,NN2_preds_for_ensemble,RNN_preds_for_ensemble]
@@ -195,13 +191,13 @@ for model in models_test:
     
 
 
-# In[17]:
+# In[15]:
 
 
 RF_preds_for_ensemble.shape == LR_preds_for_ensemble.shape == NN1_preds_for_ensemble.shape == NN2_preds_for_ensemble.shape == RNN_preds_for_ensemble.shape
 
 
-# In[18]:
+# In[17]:
 
 
 concat_preds_EE_train = np.concatenate((RF_preds_for_ensemble,LR_preds_for_ensemble,NN1_preds_for_ensemble,NN2_preds_for_ensemble,RNN_preds_for_ensemble), axis=1)
@@ -209,7 +205,7 @@ concat_preds_EE_valid = np.concatenate((RF_preds_for_ensemble_valid,LR_preds_for
 concat_preds_EE_test = np.concatenate((RF_preds_for_ensemble_test,LR_preds_for_ensemble_test,NN1_preds_for_ensemble_test,NN2_preds_for_ensemble_test,RNN_preds_for_ensemble_test), axis=1)
 
 
-# In[19]:
+# In[18]:
 
 
 
@@ -228,7 +224,7 @@ main_model.add(Dense(4, activation='softmax'))
 #optimizer = keras.optimizers.Adam(lr=0.001)
 
 main_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy',"MSE"])
-main_model.fit(concat_preds_EE_train, y_train_EE_concat_NN, epochs=20, validation_data =(concat_preds_EE_valid,y_valid_EE_concat_NN), validation_split =0.1)
+main_model.fit(concat_preds_EE_train, y_train_EE_concat_NN, epochs=5, validation_data =(concat_preds_EE_valid,y_valid_EE_concat_NN), validation_split =0.1)
 
 predictions = main_model.predict(concat_preds_EE_test)
 
@@ -236,6 +232,7 @@ print(len(predictions) == len(y_test_EE_concat_NN))
 predictions_full = []
 for each in predictions:
     ind = np.argmax(each)
+    
     predictions_full.append(ind)
 real_values = []
 for each in y_test_EE_concat_NN:
@@ -252,25 +249,10 @@ for i in range(len(predictions_full)):
 print(accuracy/len(predictions_full))
 
 
-# In[20]:
+# In[19]:
 
 
 main_model.save("trained_models_2/ensemble_1")
-
-
-# In[23]:
-
-
-perform = []
-for name, score in zip(X_concat.columns,RF.feature_importances_):
-    pair = [score,name]
-    perform.append(pair)
-
-
-# In[24]:
-
-
-sorted(perform)
 
 
 # In[ ]:
