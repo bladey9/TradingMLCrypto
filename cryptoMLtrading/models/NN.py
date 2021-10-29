@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[140]:
+# In[ ]:
 
 
 import numpy as np
 import pandas as pd
-#pd.options.display.max_rows = None
+pd.options.display.max_rows = None
 pd.options.display.max_columns = None
 import requests
 np.set_printoptions(suppress=True)
 from numpy import loadtxt
 from tensorflow import keras
-from tensorflow.python.keras.layers import Input, Dense,BatchNormalization
+from tensorflow.python.keras.layers import Input, Dense,BatchNormalization, Dropout
 from tensorflow.python.keras.models import Sequential 
 from tensorflow.python.keras.wrappers.scikit_learn import KerasClassifier
 from tensorflow.python.keras.utils import np_utils
@@ -29,27 +29,33 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.svm import SVC
+from keras.optimizers import Adam, Nadam, RMSprop
+#from keras.metrics import fmeasure
+from keras.losses import CategoricalCrossentropy
 
 
-# In[3]:
+# In[ ]:
 
 
-test_df = pd.read_csv("df_for_model_3.0")
+#test_df = pd.read_csv('../featureGen/PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
+train_df = pd.read_csv('../featureGen/PROCESSED_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_WEAK_LEARNERS.csv')
+valid_df = pd.read_csv('../featureGen/PROCESSED_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_WEAK_LEARNERS.csv')
+test_df = pd.read_csv('../featureGen/PROCESSED_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
 
 
-# In[69]:
+# In[ ]:
 
 
 def prepare_data(dataset):
     dataset.to_csv(r'NNdata.csv',header = False, index = False)
     dataset = loadtxt(r'NNdata.csv', delimiter=',')
-    X = dataset[:,0:120].astype(float)
-    Y = dataset[:,120]
+    X = dataset[:,0:95].astype(float)
+    Y = dataset[:,95]
     
     return X,Y
 
 
-# In[70]:
+# In[ ]:
 
 
 def encode(Y):
@@ -66,7 +72,7 @@ def encode(Y):
     return dummy_y
 
 
-# In[71]:
+# In[ ]:
 
 
 
@@ -79,51 +85,122 @@ def split(X,Y, div = 0.8):
     return X_train,X_test,Y_train, Y_test 
 
 
-# In[79]:
+# In[ ]:
 
 
-X,Y = prepare_data(test_df)
-Y = encode(Y)
-X_train,X_test,Y_train, Y_test = split(X,Y)
-
-
-# In[80]:
-
-
-#Testing script
-(len(X_train) + len(X_test)) == len(X)
+X_train,Y_train = prepare_data(train_df)
+X_valid,Y_valid = prepare_data(valid_df)
+X_test,Y_test = prepare_data(test_df)
+#encode y values
+Y_train = encode(Y_train)
+Y_valid = encode(Y_valid)
+Y_test = encode(Y_test)
 
 
 # In[ ]:
 
 
-main_model 
+X_train.shape[-1]
 
 
-# In[143]:
+# In[ ]:
+
 
 
 main_model = Sequential()
-main_model.add(Dense(240, input_dim=120, activation='relu'))
+main_model.add(Dense(128, input_dim=X_train.shape[-1], activation='relu'))
+main_model.add(Dropout(0.2))
 main_model.add(BatchNormalization())
-main_model.add(Dense(240, input_dim=120, activation='relu'))
+
+main_model.add(Dense(32, activation='relu'))
+main_model.add(Dropout(0.1))
+
+main_model.add(Dense(32,activation='relu'))
+main_model.add(Dropout(0.2))
 main_model.add(BatchNormalization())
+
+main_model.add(Dense(32, activation='relu'))
+main_model.add(Dropout(0.1))
+
+main_model.add(Dense(32, activation='relu'))
+main_model.add(Dropout(0.2))
+main_model.add(BatchNormalization())
+
+main_model.add(Dense(32, activation='relu'))
+main_model.add(Dropout(0.1))
+
 main_model.add(Dense(4, activation='softmax'))
 
-main_model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy',"MSE"])
-early_stopping_monitor = EarlyStopping(patience=10)
-main_model.fit(X_train, Y_train, epochs=100, validation_split=0.2)
+optimizer = keras.optimizers.Adam(lr=0.001)
+
+main_model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy',"MSE"])
+main_model.fit(X_train, Y_train, epochs=20, validation_data =(X_valid,Y_valid), validation_split =0.2)
 
 predictions = main_model.predict(X_test)
 
+len(preds) == len(Y_test)
+predictions_full = []
+for each in predictions:
+    ind = np.argmax(each)
+    predictions_full.append(ind)
+real_values = []
+for each in Y_test:
+    ind = np.argmax(each)
+    real_values.append(ind)
 
-# In[151]:
+print(len(real_values)==  len(predictions_full))
+accuracy = 0
+for i in range(len(predictions_full)):
+    if predictions_full[i] == real_values[i]:
+        accuracy += 1
 
 
-#main_model.save("NN_model_1.0")
+print(accuracy/len(predictions_full))
 
 
-# In[145]:
+# In[ ]:
+
+
+main_model.save("../models/trained_models_2/NN_model_2_All_coins_EE")
+
+
+# In[ ]:
+
+
+preds = main_model.predict(X_test)
+preds
+
+
+# In[ ]:
+
+
+len(preds) == len(Y_test)
+predictions_full = []
+for each in predictions:
+    ind = np.argmax(each)
+    predictions_full.append(ind)
+real_values = []
+for each in Y_test:
+    ind = np.argmax(each)
+    real_values.append(ind)
+
+print(len(real_values)==  len(predictions_full))
+accuracy = 0
+for i in range(len(predictions_full)):
+    if predictions_full[i] == real_values[i]:
+        accuracy += 1
+        
+        
+print(accuracy/len(predictions_full))
+
+
+# In[ ]:
+
+
+X_test
+
+
+# In[ ]:
 
 
 def true_label(y_test):
@@ -136,7 +213,7 @@ def true_label(y_test):
     return real_values
 
 
-# In[146]:
+# In[ ]:
 
 
 def simulation(preds, truth, maker, taker, starting, leverage, confidence = 0.7):
@@ -192,21 +269,21 @@ def simulation(preds, truth, maker, taker, starting, leverage, confidence = 0.7)
                 "MASSIVE ERROR"
                 break
             balances.append(balance)
-        elif truth_in_pred[i][0] == 3:
-            amount_4 +=1
-            balance = balance * (1-taker)
-            if truth_in_pred[i][1] == 0:
-                balance = (balance * loss)*(1-maker)
-            elif truth_in_pred[i][1] == 1:
-                balance = (balance * normal)* (1-maker)
-            elif truth_in_pred[i][1] == 2:
-                balance = (balance * normal)* (1-maker)
-            elif truth_in_pred[i][1] == 3:
-                balance = (balance * gain)* (1-maker)
-            else:
-                "MASSIVE ERROR"
-                break
-            balances.append(balance)
+        #elif truth_in_pred[i][0] == 3:
+            #amount_4 +=1
+            #balance = balance * (1-taker)
+            #if truth_in_pred[i][1] == 0:
+                #balance = (balance * loss)*(1-maker)
+            #elif truth_in_pred[i][1] == 1:
+               # balance = (balance * normal)* (1-maker)
+            #elif truth_in_pred[i][1] == 2:
+                #balance = (balance * normal)* (1-maker)
+            #elif truth_in_pred[i][1] == 3:
+                #balance = (balance * gain)* (1-maker)
+            #else:
+                #"MASSIVE ERROR"
+                #break
+            #balances.append(balance)
             
 
     print(f"Starting Balance= {starting}")
@@ -214,27 +291,29 @@ def simulation(preds, truth, maker, taker, starting, leverage, confidence = 0.7)
     print(f"Ending Balance = {balance}")
     print("Amount of Label 1 with a confidence score > {} = {} ".format(confidence, len(truth_in_pred)))
     print("Amount of True Label 1 to True Label 4= {}:{}".format(amount_1, amount_4))
-    print("Ratio of Label 1 to Label 4: {}".format(amount_1/amount_4))
+    #print("Ratio of Label 1 to Label 4: {}".format(amount_1/amount_4))
     plt.figure(figsize=(12,6))
     plt.plot(balances)
 
 
-# In[148]:
+# In[ ]:
 
 
 import matplotlib.pyplot as plt
 real_values = true_label(Y_test)
-maker = 0.00018
-taker = 0.00018
+maker = 0.0002
+taker = 0.0002
 starting = 1000
-leverage = 1
-confidence = 0.6
-confidence =[0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+leverage = 10
+confidence = []
+
+for i in range(20,50):
+    confidence.append(i/100)
 for confidence in confidence:   
     simulation(predictions,real_values,maker,taker, starting, leverage, confidence)
 
 
-# In[84]:
+# In[ ]:
 
 
 def testing(preds, truth, taker, maker, gain, normal, loss):
@@ -276,4 +355,10 @@ def testing(preds, truth, taker, maker, gain, normal, loss):
         return False
     
     return True
+
+
+# In[ ]:
+
+
+
 
