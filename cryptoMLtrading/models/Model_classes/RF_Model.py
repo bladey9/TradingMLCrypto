@@ -45,7 +45,7 @@ class RF:
     def run_model(self):
         self.model = AdaBoostClassifier(RandomForestClassifier(verbose=1), n_estimators=500,algorithm="SAMME.R", learning_rate=0.5)
         self.model.fit(self.X_train, self.y_train)
-        acc = self.model.score(X_test.values, y_test.values)
+        acc = self.model.score(self.X_test.values, self.y_test.values)
         print("Accuracy on test data: ", acc)
         
     def confusion_matrix(self, X_test, y_test):
