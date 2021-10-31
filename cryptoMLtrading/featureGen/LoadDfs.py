@@ -22,7 +22,7 @@ from datetime import datetime
 
 
 def create_dataframes():
-    main_path = 'originalData/data/futures/um/monthly/klines'
+    main_path = '../featureGen/originalData/data/futures/um/monthly/klines'
     coins = [f for f in listdir(main_path) if 'USDT' in f]
     coins.sort()
     coin_5m = {}

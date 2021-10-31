@@ -56,12 +56,12 @@ class run_concat_sequenced():
                 if type_ == "concat":
                     full_df_concat = self.append(full_df_complete, look_back)
                     NAME = F"Strategy2/DF_{look_back}_Candles_Concat_{key}.csv"
-                    full_df_concat.to_csv(f"PROCESSED_COINS/{NAME}",index = False) 
+                    full_df_concat.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False) 
                 
                 elif type_ == "sequenced":
                     
                     NAME = F"Strategy2/DF_sequence_{key}.csv"
-                    full_df_complete.to_csv(f"PROCESSED_COINS/{NAME}",index = False)
+                    full_df_complete.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False)
 
                 
     def append(self, data, look_back = 5,columns_size = 20):
