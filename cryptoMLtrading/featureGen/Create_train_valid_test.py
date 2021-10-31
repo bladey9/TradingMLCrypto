@@ -4,14 +4,14 @@
 # # Creating training, validation and testing data for all coins
 # ## 2 type of datasets for each set are created: concatenated and sequenced
 
-# In[1]:
+# In[5]:
 
 
 import pandas as pd
 import pickle
 
 
-# In[2]:
+# In[6]:
 
 
 class TRAIN_VALID_TEST():
@@ -74,80 +74,70 @@ class TRAIN_VALID_TEST():
 
 # ### How to use TRAIN_VALID_TEST() class
 
-# In[3]:
+# In[ ]:
 
 
-#dotusdt_df = pd.read_csv('PROCESSED_COINS/Concat/DF_5_Candles_Concat_DOTUSDT.csv.zip')
-#ftmusdt_df = pd.read_csv('PROCESSED_COINS/Concat/DF_5_Candles_Concat_FTMUSDT.csv.zip')
-#icpusdt_df = pd.read_csv('PROCESSED_COINS/Concat/DF_5_Candles_Concat_ICPUSDT.csv.zip')
-#maticusdt_df = pd.read_csv('PROCESSED_COINS/Concat/DF_5_Candles_Concat_MATICUSDT.csv.zip')
-#omgusdt_df = pd.read_csv('PROCESSED_COINS/Concat/DF_5_Candles_Concat_OMGUSDT.csv.zip')
-#solusdt_df = pd.read_csv('PROCESSED_COINS/Concat/DF_5_Candles_Concat_SOLUSDT.csv.zip')
-
-
-# In[16]:
-
-
-#dotusdt_df = pd.read_csv('PROCESSED_COINS/Sequenced/DF_sequence_DOTUSDT.csv')[5:]
-#ftmusdt_df = pd.read_csv('PROCESSED_COINS/Sequenced/DF_sequence_FTMUSDT.csv')[5:]
-#icpusdt_df = pd.read_csv('PROCESSED_COINS/Sequenced/DF_sequence_ICPUSDT.csv')[5:]
-#maticusdt_df = pd.read_csv('PROCESSED_COINS/Sequenced/DF_sequence_MATICUSDT.csv')[5:]
-#omgusdt_df = pd.read_csv('PROCESSED_COINS/Sequenced/DF_sequence_OMGUSDT.csv')[5:]
-#solusdt_df = pd.read_csv('PROCESSED_COINS/Sequenced/DF_sequence_SOLUSDT.csv')[5:]
-
-
-# In[17]:
-
+#dotusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_C_DOTUSDT.csv')
+#ftmusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_C_FTMUSDT.csv')
+#icpusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_C_ICPUSDT.csv')
+#maticusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_C_MATICUSDT.csv')
+#omgusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_C_OMGUSDT.csv')
+#solusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_C_SOLUSDT.csv')
 
 #coins_dfs = {'DOTUSDT':dotusdt_df, 'FTMUSDT':ftmusdt_df, 'ICPUSDT':icpusdt_df, 'MATICUSDT':maticusdt_df, 'OMGUSDT':omgusdt_df, 'SOLUSDT':solusdt_df}
 #data = TRAIN_VALID_TEST(coins_dfs)
 #train1, valid1, train2, valid2, test = data.run()
 
-
-# ### How to save dataframes
-
-# In[18]:
-
-
 # Saving concatenated dataframes
-#train1.to_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_WEAK_LEARNERS.csv',index=False)
-#valid1.to_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_WEAK_LEARNERS.csv', index=False)
-#train2.to_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_ENSEMBLE.csv',index=False)
-#valid2.to_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_ENSEMBLE.csv', index=False)
-#test.to_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv', index=False)
+#train1.to_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_TRAIN_WEAK_LEARNERS.csv',index=False)
+#valid1.to_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_VALID_WEAK_LEARNERS.csv', index=False)
+#train2.to_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_TRAIN_ENSEMBLE.csv',index=False)
+#valid2.to_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_VALID_ENSEMBLE.csv', index=False)
+#test.to_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_TEST.csv', index=False)
 
 
-# In[19]:
+# In[8]:
 
+
+#dotusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_S_DOTUSDT.csv')[5:]
+#ftmusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_S_FTMUSDT.csv')[5:]
+#icpusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_S_ICPUSDT.csv')[5:]
+#maticusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_S_MATICUSDT.csv')[5:]
+#omgusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_S_OMGUSDT.csv')[5:]
+#solusdt_df = pd.read_csv('PROCESSED_COINS/STRATEGY2/DF_5_S_SOLUSDT.csv')[5:]
+
+#coins_dfs = {'DOTUSDT':dotusdt_df, 'FTMUSDT':ftmusdt_df, 'ICPUSDT':icpusdt_df, 'MATICUSDT':maticusdt_df, 'OMGUSDT':omgusdt_df, 'SOLUSDT':solusdt_df}
+#data = TRAIN_VALID_TEST(coins_dfs)
+#train1, valid1, train2, valid2, test = data.run()
 
 # Saving sequenced dataframes
-#train1.to_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TRAIN_WEAK_LEARNERS.csv',index=False)
-#valid1.to_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_VALID_WEAK_LEARNERS.csv',index=False)
-#train2.to_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TRAIN_ENSEMBLE.csv',index=False)
-#valid2.to_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_VALID_ENSEMBLE.csv', index=False)
-#test.to_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TEST.csv', index=False)
+#train1.to_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_TRAIN_WEAK_LEARNERS.csv',index=False)
+#valid1.to_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_VALID_WEAK_LEARNERS.csv', index=False)
+#train2.to_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_TRAIN_ENSEMBLE.csv',index=False)
+#valid2.to_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_VALID_ENSEMBLE.csv', index=False)
+#test.to_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_TEST.csv', index=False)
 
 
 # ### How to load dataframes
 
-# In[20]:
+# In[ ]:
 
 
 # Loading concatenated dataframes
-#train_concat1 = pd.read_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_WEAK_LEARNERS.csv')
-#valid_concat1 = pd.read_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_WEAK_LEARNERS.csv')
-#train_concat2 = pd.read_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_ENSEMBLE.csv')
-#valid_concat2 = pd.read_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_ENSEMBLE.csv')
-#test_concat = pd.read_csv('PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
+#train_concat1 = pd.read_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_TRAIN_WEAK_LEARNERS.csv')
+#valid_concat1 = pd.read_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_VALID_WEAK_LEARNERS.csv')
+#train_concat2 = pd.read_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_TRAIN_ENSEMBLE.csv')
+#valid_concat2 = pd.read_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_VALID_ENSEMBLE.csv')
+#test_concat = pd.read_csv('PROCESSED_COINS/STRATEGY2/CONCAT_TRAIN_VALID_TEST/DF_5_C_TEST.csv')
 
 
-# In[21]:
+# In[ ]:
 
 
 # Loading sequenced dataframes
-#train_sequenced1 = pd.read_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TRAIN_WEAK_LEARNERS.csv')
-#valid_sequenced1 = pd.read_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_VALID_WEAK_LEARNERS.csv')
-#train_sequenced2 = pd.read_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TRAIN_ENSEMBLE.csv')
-#valid_sequenced2 = pd.read_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_VALID_ENSEMBLE.csv')
-#test_sequenced = pd.read_csv('PROCESSED_COINS/Sequenced_ALL_COINS/DF_5_Candles_Sequenced_ALL_COINS_TEST.csv')
+#train_sequenced1 = pd.read_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_TRAIN_WEAK_LEARNERS.csv')
+#valid_sequenced1 = pd.read_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_VALID_WEAK_LEARNERS.csv')
+#train_sequenced2 = pd.read_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_TRAIN_ENSEMBLE.csv')
+#valid_sequenced2 = pd.read_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_VALID_ENSEMBLE.csv')
+#test_sequenced = pd.read_csv('PROCESSED_COINS/STRATEGY2/SEQ_TRAIN_VALID_TEST/DF_5_S_TEST.csv')
 
