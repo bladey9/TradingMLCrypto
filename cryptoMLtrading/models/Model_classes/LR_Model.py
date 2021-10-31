@@ -68,26 +68,7 @@ class LR:
         model_name = f'{directory_path}.sav'
         self.model = pickle.load(open(model_name, 'rb'))
         
-            
 
-
-# In[10]:
-
-
-# Loading concatenated dataframes
-train= pd.read_csv('../../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_WEAK_LEARNERS.csv')
-valid = pd.read_csv('../../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_WEAK_LEARNERS.csv')
-test = pd.read_csv('../../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
-
-LR = LR(train, valid, test)
-#RF.run_model()
-#RF.save_model('../trained_models_2/LR_model_1_EE')
-
-LR.load_model('../trained_models_2/LR_model_1_EE')
-LR.confusion_matrix(LR.X_test, LR.y_test)
-
-
-# In[ ]:
 
 
 

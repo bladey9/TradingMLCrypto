@@ -73,28 +73,7 @@ class RF:
         # load the model from disk
         model_name = f'{directory_path}.sav'
         self.model = pickle.load(open(model_name, 'rb'))
-        
-            
-
-
-# In[ ]:
-
-
-# Loading concatenated dataframes
-train= pd.read_csv('../../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TRAIN_WEAK_LEARNERS.csv')
-valid = pd.read_csv('../../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_VALID_WEAK_LEARNERS.csv')
-test = pd.read_csv('../../featureGen/PROCESSED_COINS/CONCAT_ALL_COINS/DF_5_Candles_Concat_ALL_COINS_TEST.csv')
-
-RF = RF(train, valid, test)
-#RF.run_model()
-#RF.save_model('../trained_models_2/RF_model_1_EE')
-
-RF.load_model('../trained_models_2/RF_model_1_EE')
-RF.confusion_matrix(RF.X_test, RF.y_test)
-
-
-# In[ ]:
-
+   
 
 
 
