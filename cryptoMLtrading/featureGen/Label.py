@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 
-# In[6]:
+# In[21]:
 
 
 #Assign label to df
@@ -17,16 +17,20 @@ import numpy as np
 #Label 3 = Reached high and low
 #Label 4 = Reached low without reaching high
 
-def LABEL(dataframe):
+def LABEL(dataframe, stop_gain, stop_loss):
     for index,row in dataframe.iterrows():
         increase = (dataframe["high"][index] / dataframe["open"][index]) - 1
         decrease = (1 - (dataframe["low"][index]/dataframe["open"][index]))
-        if increase > 0.005 and decrease < 0.003:
+        
+        if increase > stop_gain and decrease < stop_loss:
             dataframe.at[index-1,"label"] = 1
-        elif increase < 0.003 and decrease > 0.005:
+            
+        elif increase < stop_gain and decrease > stop_loss:
             dataframe.at[index-1,"label"] = 4
-        elif increase > 0.003 and decrease > 0.003:
+            
+        elif increase > stop_gain and decrease > stop_loss:
             dataframe.at[index-1,"label"] = 3
+            
         else:
             dataframe.at[index-1,"label"] = 2
             
