@@ -22,17 +22,17 @@ def LABEL(dataframe, stop_gain, stop_loss):
         increase = (dataframe["high"][index] / dataframe["open"][index]) - 1
         decrease = (1 - (dataframe["low"][index]/dataframe["open"][index]))
         
-        if increase > stop_gain and decrease < stop_loss:
+        dataframe.at[index-1,"label"] = 0
+        
+        if increase > 0.001 and decrease > 0.001:
             dataframe.at[index-1,"label"] = 1
             
-        elif increase < stop_gain and decrease > stop_loss:
-            dataframe.at[index-1,"label"] = 4
+        if increase > 0.002 and decrease > 0.002:
+            dataframe.at[index-1,"label"] = 2
             
-        elif increase > stop_gain and decrease > stop_loss:
+        if increase > 0.003 and decrease > 0.003:
             dataframe.at[index-1,"label"] = 3
             
-        else:
-            dataframe.at[index-1,"label"] = 2
             
     dataframe.drop(dataframe.tail(2).index,inplace=True) 
     

@@ -10,6 +10,7 @@ import numpy as np
 import LoadDfs
 import talib
 import matplotlib.pyplot as plt
+import os
 
 #import TI
 from RSI import RSI
@@ -23,6 +24,7 @@ from FR import FR
 #clean and append labels
 from CLEAN import CLEAN
 from Label import LABEL
+from CLEAN_not_OC import CLEAN_not_OC
 
 
 # In[19]:
@@ -30,13 +32,17 @@ from Label import LABEL
 
 class run_concat_sequenced():
     
-    def __init__(self, dataframes_dict,stop_gain,stop_loss):
+    def __init__(self, dataframes_dict,stop_gain,stop_loss,strat_number,columns_size = 20,open_close = False):
         self.coins = dataframes_dict
         self.stop_gain = stop_gain
         self.stop_loss = stop_loss
+        self.number = strat_number
+        self.columns_size = columns_size
+        self.open_close = open_close
         self.run_file()
         
     def run_file(self):
+        #os.makedirs(f"../featureGen/PROCESSED_COINS/STRATEGY{self.number}")
         types = ["concat","sequenced"]
         for type_ in types:
             for key,value in self.coins.items():
@@ -48,20 +54,37 @@ class run_concat_sequenced():
                 full_df_MA = MA(full_df_SO)
                 full_df_MACD = MACD(full_df_MA)
                 full_df = FR(full_df_MACD)
-
+                
                 full_df_labels = LABEL(full_df,self.stop_gain,self.stop_loss)
-                full_df_complete = CLEAN(full_df_labels)
+                if self.open_close == True:
+                    full_df_complete = CLEAN_not_OC(full_df_labels)
+                else:
+                    full_df_complete = CLEAN(full_df_labels)
+                
                 look_back = 5
                 
-                if type_ == "concat":
-                    full_df_concat = self.append(full_df_complete, look_back)
-                    NAME = F"Strategy2/DF_{look_back}_Candles_Concat_{key}.csv"
-                    full_df_concat.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False) 
-                
-                elif type_ == "sequenced":
+                if self.open_close == True:
+                    if type_ == "concat":
+                        full_df_concat = self.append(full_df_complete, look_back, self.columns_size)
+                        NAME = F"STRATEGY{self.number}/DF_{look_back}_Candles_Concat_{key}_open_close.csv"
+                        full_df_concat.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False) 
+
+                    elif type_ == "sequenced":
+
+                        NAME = F"STRATEGY{self.number}/DF_sequence_{key}_open_close.csv"
+                        full_df_complete.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False)
+                else:
+                    if type_ == "concat":
+                        full_df_concat = self.append(full_df_complete, look_back, self.columns_size)
+                        NAME = F"STRATEGY{self.number}/DF_{look_back}_Candles_Concat_{key}.csv"
+                        full_df_concat.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False) 
+
+                    elif type_ == "sequenced":
+
+                        NAME = F"STRATEGY{self.number}/DF_sequence_{key}.csv"
+                        full_df_complete.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False)
                     
-                    NAME = F"Strategy2/DF_sequence_{key}.csv"
-                    full_df_complete.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False)
+                    
 
                 
     def append(self, data, look_back = 5,columns_size = 20):
