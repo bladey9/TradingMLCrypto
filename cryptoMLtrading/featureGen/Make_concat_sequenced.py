@@ -32,12 +32,11 @@ from CLEAN_not_OC import CLEAN_not_OC
 
 class run_concat_sequenced():
     
-    def __init__(self, dataframes_dict,stop_gain,stop_loss,strat_number,columns_size = 20,open_close = False):
+    def __init__(self, dataframes_dict,stop_gain,stop_loss,strat_number,open_close = False):
         self.coins = dataframes_dict
         self.stop_gain = stop_gain
         self.stop_loss = stop_loss
         self.number = strat_number
-        self.columns_size = columns_size
         self.open_close = open_close
         self.run_file()
         
@@ -65,7 +64,7 @@ class run_concat_sequenced():
                 
                 if self.open_close == True:
                     if type_ == "concat":
-                        full_df_concat = self.append(full_df_complete, look_back, self.columns_size)
+                        full_df_concat = self.append(full_df_complete, look_back)
                         NAME = F"STRATEGY{self.number}/DF_{look_back}_Candles_Concat_{key}_open_close.csv"
                         full_df_concat.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False) 
 
@@ -75,7 +74,7 @@ class run_concat_sequenced():
                         full_df_complete.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False)
                 else:
                     if type_ == "concat":
-                        full_df_concat = self.append(full_df_complete, look_back, self.columns_size)
+                        full_df_concat = self.append(full_df_complete, look_back)
                         NAME = F"STRATEGY{self.number}/DF_{look_back}_Candles_Concat_{key}.csv"
                         full_df_concat.to_csv(f"../featureGen/PROCESSED_COINS/{NAME}",index = False) 
 
@@ -87,7 +86,7 @@ class run_concat_sequenced():
                     
 
                 
-    def append(self, data, look_back = 5,columns_size = 20):
+    def append(self, data, look_back = 5):
 
         column_og = data.columns
 
@@ -99,7 +98,7 @@ class run_concat_sequenced():
                 columns.append(name+str(i+2))
             column_names[i+2] = columns
 
-        Nan_list = ["NaN"]*columns_size
+        Nan_list = ["NaN"]*len(data.columns)
         Nan_df = pd.DataFrame([Nan_list], columns = data.columns)
 
         dfs = {}
