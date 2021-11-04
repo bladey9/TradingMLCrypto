@@ -17,7 +17,7 @@ import numpy as np
 #Label 3 = Reached high and low
 #Label 4 = Reached low without reaching high
 
-def LABEL(dataframe, stop_gain, stop_loss):
+def LABEL(dataframe):
     for index,row in dataframe.iterrows():
         increase = (dataframe["high"][index] / dataframe["open"][index]) - 1
         decrease = (1 - (dataframe["low"][index]/dataframe["open"][index]))

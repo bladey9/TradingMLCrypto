@@ -62,7 +62,7 @@ class RF:
         
         max_ = 4
         for i in range(max_):
-            print(f'Num of label {i+1}: {list(y_test.values).count(i+1)} -- Predicted: {list(predictions).count(i+1)} -- True positives {round((cm[i][i]/list(predictions).count(i+1))*100, 2)}% ({cm[i][i]})')
+            print(f'Num of label {i}: {list(y_test.values).count(i)} -- Predicted: {list(predictions).count(i)} -- True positives {round((cm[i][i]/list(predictions).count(i))*100, 2)}% ({cm[i][i]})')
 
     def save_model(self, directory_path):
         # save the model to disk

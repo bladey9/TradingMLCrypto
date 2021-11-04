@@ -32,16 +32,15 @@ from CLEAN_not_OC import CLEAN_not_OC
 
 class run_concat_sequenced():
     
-    def __init__(self, dataframes_dict,stop_gain,stop_loss,strat_number,open_close = False):
+    def __init__(self, dataframes_dict,strat_number,open_close = False):
         self.coins = dataframes_dict
-        self.stop_gain = stop_gain
-        self.stop_loss = stop_loss
         self.number = strat_number
         self.open_close = open_close
         self.run_file()
         
     def run_file(self):
-        #os.makedirs(f"../featureGen/PROCESSED_COINS/STRATEGY{self.number}")
+        if not os.path.isdir(f"../featureGen/PROCESSED_COINS/STRATEGY{self.number}"):
+            os.makedirs(f"../featureGen/PROCESSED_COINS/STRATEGY{self.number}")
         types = ["concat","sequenced"]
         for type_ in types:
             for key,value in self.coins.items():
@@ -54,7 +53,7 @@ class run_concat_sequenced():
                 full_df_MACD = MACD(full_df_MA)
                 full_df = FR(full_df_MACD)
                 
-                full_df_labels = LABEL(full_df,self.stop_gain,self.stop_loss)
+                full_df_labels = LABEL(full_df)
                 if self.open_close == True:
                     full_df_complete = CLEAN_not_OC(full_df_labels)
                 else:
