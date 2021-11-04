@@ -63,11 +63,11 @@ class TRAIN_VALID_TEST():
         test = pd.concat(test_dfs, ignore_index=True)
 
         # Shuffle dataframes' rows
-        train1 = train1.sample(frac = 1, random_state=42)
-        valid1 = valid1.sample(frac = 1, random_state=42)
-        train2 = train2.sample(frac = 1, random_state=42)
-        valid2 = valid2.sample(frac = 1, random_state=42)
-        test = test.sample(frac = 1, random_state=42)
+        #train1 = train1.sample(frac = 1, random_state=42)
+        #valid1 = valid1.sample(frac = 1, random_state=42)
+        #train2 = train2.sample(frac = 1, random_state=42)
+        #valid2 = valid2.sample(frac = 1, random_state=42)
+        #test = test.sample(frac = 1, random_state=42)
         
         return train1, valid1, train2, valid2, test
 

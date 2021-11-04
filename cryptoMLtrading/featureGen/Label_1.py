@@ -17,20 +17,21 @@ import numpy as np
 #Label 3 = Reached high and low
 #Label 4 = Reached low without reaching high
 
-def LABEL(dataframe):
+def LABEL_1(dataframe):
     for index,row in dataframe.iterrows():
         increase = (dataframe["high"][index] / dataframe["open"][index]) - 1
         decrease = (1 - (dataframe["low"][index]/dataframe["open"][index]))
         
+       
         dataframe.at[index-1,"label"] = 0
         
-        if increase > 0.001 and decrease > 0.001:
+        if increase >= 0.005 and decrease <= 0.002:
             dataframe.at[index-1,"label"] = 1
             
-        if increase > 0.002 and decrease > 0.002:
+        if increase <= 0.002 and decrease >= 0.005:
             dataframe.at[index-1,"label"] = 2
             
-        if increase > 0.003 and decrease > 0.003:
+        if increase >= 0.005 and decrease >= 0.005:
             dataframe.at[index-1,"label"] = 3
             
             
