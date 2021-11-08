@@ -21,9 +21,13 @@ from MACD import MACD
 from ICHIMOKU import ICHIMOKU
 from FR import FR
 
-#clean and append labels
+#clean dataframe
 from CLEAN import CLEAN
-from Label_1 import LABEL_1
+#Depending on What Label we want
+#from Label_1 import LABEL_1
+#from Label_2 import LABEL_2
+from Label_3 import LABEL_3
+#Clean dataframe but keep open/close -- used for testing purposes.
 from CLEAN_not_OC import CLEAN_not_OC
 
 
@@ -53,7 +57,7 @@ class run_concat_sequenced():
                 full_df_MACD = MACD(full_df_MA)
                 full_df = FR(full_df_MACD)
                 
-                full_df_labels = LABEL_1(full_df)
+                full_df_labels = LABEL_3(full_df)
                 if self.open_close == True:
                     full_df_complete = CLEAN_not_OC(full_df_labels)
                 else:
