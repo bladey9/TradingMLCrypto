@@ -1,24 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[44]:
-
 
 import pandas as pd
 import numpy as np
 import LoadDfs
 import talib
 import matplotlib.pyplot as plt
-
-
-# In[61]:
-
-
-#coins = LoadDfs.create_dataframes()
-#dotusdt_df = coins["DOTUSDT"]
-
-
-# In[55]:
 
 
 def MA(dataframe):
@@ -37,13 +25,12 @@ def MA(dataframe):
     return dataframe
 
 
-# In[59]:
+#################### Use case example with graph included ####################
 
+#coins = LoadDfs.create_dataframes()
+#dotusdt_df = coins["DOTUSDT"]
 
 #dotusdt_df_ma = MA(dotusdt_df)
-
-
-# In[60]:
 
 
 #Plot the MAs on a graph of 400 
@@ -64,7 +51,6 @@ def MA(dataframe):
 #plt.show()
 
 
-# In[ ]:
 
 
 

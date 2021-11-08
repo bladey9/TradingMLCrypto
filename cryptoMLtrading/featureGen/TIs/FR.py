@@ -1,25 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
-
-
 import pandas as pd
 import numpy as np
 import LoadDfs
 import talib
 import matplotlib.pyplot as plt
-
-
-# In[12]:
-
-
-#coins = LoadDfs.create_dataframes()
-#dotusdt_df = coins["DOTUSDT"]
-
-
-# In[13]:
-
 
 def FR(dataframe):
     #create the lists for FR grade and FR percent
@@ -67,14 +53,6 @@ def FR(dataframe):
     dataframe = dataframe.assign(FR_percent=FR_percent)
     return dataframe
 
-
-# In[11]:
-
-
-#fr_df = FR(dotusdt_df)
-
-
-# In[ ]:
 
 
 

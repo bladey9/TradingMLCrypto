@@ -1,24 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import pandas as pd
 import numpy as np
 import LoadDfs
 import matplotlib.pyplot as plt
-
-
-# In[2]:
-
-
-#Retrieve df
-#coins = LoadDfs.create_dataframes()
-#df = coins["DOTUSDT"]
-
-
-# In[3]:
 
 
 #Calculate Technical indicator on df
@@ -44,36 +30,18 @@ def BB(df):
     return df
 
 
-# In[4]:
+#################### Use case example with graph included ####################
 
+#Retrieve df
+#coins = LoadDfs.create_dataframes()
+#df = coins["DOTUSDT"]
 
 #updated_df_BB = BB(df)
 #updated_df_BB[-100:]
 
-
-# In[5]:
-
-
 #updated_df_BB = updated_df_BB[:10000] #(used to visualize the normalised BB with less data)
-
-
-# In[ ]:
-
 
 # Plotting it all together
 #ax = updated_df_BB[['close', 'NormalisedLB', 'NormalisedUB']].plot(color=['blue', 'orange', 'yellow'])
 #ax.fill_between(updated_df_BB.index, updated_df_BB['NormalisedLB'], updated_df_BB['NormalisedUB'], facecolor='orange', alpha=0.1)
 #plt.show()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-

@@ -1,21 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-
-
-# In[ ]:
-
-
-#df = pd.read_csv('df_with_TI')
-#df[-5:]
-
-
-# In[2]:
 
 
 def CLEAN(df):
@@ -47,21 +34,6 @@ def CLEAN(df):
     else:
         return 'ERROR: Index Missmatch'
 
-
-# In[ ]:
-
-
-#df_clean = CLEAN(df)
-#df_clean[-5:]
-
-
-# In[ ]:
-
-
-#df_clean.shape
-
-
-# In[ ]:
 
 
 

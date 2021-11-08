@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import pandas as pd
 import numpy as np
@@ -10,18 +8,6 @@ import LoadDfs
 import matplotlib.pyplot as plt
 #!pip install pandas_ta
 import pandas_ta as ta
-
-
-# In[65]:
-
-
-#Retrieve df
-#coins = LoadDfs.create_dataframes()
-#df = coins["DOTUSDT"]
-
-
-# In[66]:
-
 
 #Calculate Technical indicator on df
 def ICHIMOKU(df):
@@ -38,29 +24,23 @@ def ICHIMOKU(df):
     return df
 
 
-# In[67]:
+#################### Use case example with graph included ####################
 
 
 #updated_df_ICHIMOKU = ICHIMOKU(df)
 #updated_df_ICHIMOKU[-100:]
 
-
-# In[63]:
-
+#Retrieve df
+#coins = LoadDfs.create_dataframes()
+#df = coins["DOTUSDT"]
 
 #test_df_ICHIMOKU = updated_df_ICHIMOKU[-100:] #(used to visualize the ICHIMOKU with less data)
-
-
-# In[64]:
-
 
 # Plotting it all together
 #ax = test_df_ICHIMOKU[['ISA_9', 'ISB_26', 'ITS_9', 'IKS_26', 'ICS_26']].plot(color=['orange', 'yellow', 'red', 'green', 'purple'])
 #ax.fill_between(test_df_ICHIMOKU.index, test_df_ICHIMOKU['ISA_9'], test_df_ICHIMOKU['ISB_26'], facecolor='red', alpha=0.3)
 #plt.show()
 
-
-# In[ ]:
 
 
 
