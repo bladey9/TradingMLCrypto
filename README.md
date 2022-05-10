@@ -24,6 +24,8 @@ Binance Connection
 - Used to retrieve a websocket connection for live Binance data
 - Run a potential strategy on the live data
 
+Pancakeswap Connection
+
 **models**
 
 Pipeline
