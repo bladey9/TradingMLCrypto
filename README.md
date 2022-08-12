@@ -1,4 +1,7 @@
 # TradingMLCrypto
+
+NOTE - Only CEX trading bot is shown. Due to multiple authors of the DEX code, unable to share.
+
 --ML--
 
 A Project in finding potential trading strategies for intraday trading using Machine learning.
